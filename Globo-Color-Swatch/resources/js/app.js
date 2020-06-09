@@ -20,9 +20,14 @@ import ReactDOM from "react-dom";
 import {AppProvider} from "@shopify/polaris";
 import App from "./components/App";
 import "@shopify/polaris/styles.css";
+import {
+    BrowserRouter,
+  } from "react-router-dom";
 
 ReactDOM.render(
     <AppProvider>
+        <BrowserRouter  basename="Globo-Color-Swatch/public/">
         <App></App>
+        </BrowserRouter>
     </AppProvider>, document.getElementById("app")
 );
