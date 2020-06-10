@@ -16,8 +16,7 @@ class CreateTableVariantsTable extends Migration
         Schema::create('variants', function (Blueprint $table) {
             $table->increments('id');
             $table->string('product_id');
-            $table->string('color');
-            $table->string('size');
+            $table->string('options');
             $table->string('image');
             $table->timestamps();
         });

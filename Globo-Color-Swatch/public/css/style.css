@@ -1,0 +1,13 @@
+.Polaris-DataTable__Table  .Polaris-Select{
+    width: fit-content;
+}
+.Polaris-DataTable__Table td,.Polaris-DataTable__Table th{
+    padding: 8px
+}
+.Polaris-DataTable__Table .Polaris-Icon{
+    width: 15px;
+    height: 15px;
+}
+.Polaris-DataTable__Table .Polaris-ButtonGroup__Item{
+    margin: 0;
+}

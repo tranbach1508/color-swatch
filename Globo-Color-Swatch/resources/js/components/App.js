@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { useCallback, useRef, useState } from 'react';
-import { ActionList, AppProvider, Avatar, Card, ContextualSaveBar, FormLayout, Frame, Layout, Loading, Modal, Navigation, Page, SkeletonBodyText, SkeletonDisplayText, SkeletonPage, TextContainer, TextField, Toast, TopBar } from '@shopify/polaris';
-import { ArrowLeftMinor, ConversationMinor, HomeMajorMonotone, InstallMinor } from '@shopify/polaris-icons';
+import { Icon, ActionList, AppProvider, Avatar, Card, ContextualSaveBar, FormLayout, Frame, Layout, Loading, Modal, Navigation, Page, SkeletonBodyText, SkeletonDisplayText, SkeletonPage, TextContainer, TextField, Toast, TopBar } from '@shopify/polaris';
+import { ArrowLeftMinor, ConversationMinor, HomeMajorMonotone, InstallMinor,ColorsMajorMonotone } from '@shopify/polaris-icons';
 import Routers from './Routers';
 import {
   Link
@@ -162,37 +162,44 @@ export default function App() {
   );
 
   const navigationMarkup = (
-    <Navigation location="/">
-      <Navigation.Section
-        items={[
-          {
-            label: 'Back to Shopify',
-            icon: ArrowLeftMinor,
-          },
-        ]}
-      />
-      <Navigation.Section
-        separator
-        title="Jaded Pixel App"
-        items={[
-          {
-            label: 'Dashboard',
-            icon: HomeMajorMonotone,
-            onClick: toggleIsLoading,
-          },
-          {
-            label: 'Theme integrate',
-            icon: InstallMinor,
-            onClick: toggleIsLoading,
-          },
-        ]}
-        action={{
-          icon: ConversationMinor,
-          accessibilityLabel: 'Contact support',
-          onClick: toggleModalActive,
-        }}
-      />
-    </Navigation>
+    <nav className="Polaris-Navigation">
+      <div className="Polaris-Navigation__PrimaryNavigation Polaris-Scrollable Polaris-Scrollable--vertical" data-polaris-scrollable="true">
+        <ul className="Polaris-Navigation__Section">
+          <li className="Polaris-Navigation__ListItem"><button type="button" className="Polaris-Navigation__Item">
+            <div className="Polaris-Navigation__Icon"><span className="Polaris-Icon"><svg viewBox="0 0 20 20" className="Polaris-Icon__Svg" focusable="false" aria-hidden="true">
+              <path d="M17 9H5.414l3.293-3.293a.999.999 0 1 0-1.414-1.414l-5 5a.999.999 0 0 0 0 1.414l5 5a.997.997 0 0 0 1.414 0 .999.999 0 0 0 0-1.414L5.414 11H17a1 1 0 1 0 0-2" fillRule="evenodd" />
+            </svg></span></div><span className="Polaris-Navigation__Text">Back to Shopify</span>
+          </button></li>
+        </ul>
+        <ul className="Polaris-Navigation__Section Polaris-Navigation__Section--withSeparator">
+          <li className="Polaris-Navigation__SectionHeading"><span className="Polaris-Navigation__Text">Navigation</span></li>
+          <li className="Polaris-Navigation__ListItem">
+            <div className="Polaris-Navigation__ItemWrapper"><Link className="Polaris-Navigation__Item" tabIndex={0} to={'/'} data-polaris-unstyled="true">
+              <div className="Polaris-Navigation__Icon"><span className="Polaris-Icon"><svg viewBox="0 0 20 20" className="Polaris-Icon__Svg" focusable="false" aria-hidden="true">
+                <path d="M19.664 8.252l-9-8a1 1 0 0 0-1.328 0L8 1.44V1a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v5.773L.336 8.252a1.001 1.001 0 0 0 1.328 1.496L2 9.449V19a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9.449l.336.299a.997.997 0 0 0 1.411-.083 1.001 1.001 0 0 0-.083-1.413zM16 18h-2v-5a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v5H4V7.671l6-5.333 6 5.333V18zm-8 0v-4h4v4H8zM4 2h2v1.218L4 4.996V2z" fillRule="evenodd" />
+              </svg></span></div><span className="Polaris-Navigation__Text">Dashboard</span>
+            </Link></div>
+          </li>
+          <li className="Polaris-Navigation__ListItem">
+            <div className="Polaris-Navigation__ItemWrapper"><Link className="Polaris-Navigation__Item" tabIndex={0} to={'integrate'} data-polaris-unstyled="true">
+              <div className="Polaris-Navigation__Icon">
+                <span className="Polaris-Icon">
+                  <svg className="Polaris-Icon__Svg" viewBox="0 0 20 20"><path d="M9 18H4V7h3c.55 0 1-.45 1-1V5h6v1c0 .55.45 1 1 1s1-.45 1-1V4c0-.55-.45-1-1-1H8V1c0-.55-.45-1-1-1H1C.45 0 0 .45 0 1v5c0 .55.45 1 1 1h1v12c0 .55.45 1 1 1h6c.55 0 1-.45 1-1s-.45-1-1-1zM2 5V2h4v3H2zm17.707 8.293l-5-5A.997.997 0 0 0 14 8H9a1 1 0 0 0-1 1v5c0 .265.105.52.293.707l5 5a.997.997 0 0 0 1.414 0l5-5a1 1 0 0 0 0-1.414zM14 17.586l-4-4V10h3.586l4 4L14 17.586zM12 11a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" /></svg>
+                </span>
+              </div><span className="Polaris-Navigation__Text">Theme integrate</span>
+            </Link></div>
+          </li>
+          <li className="Polaris-Navigation__ListItem">
+            <div className="Polaris-Navigation__ItemWrapper"><Link className="Polaris-Navigation__Item" tabIndex={0} to={'custom'} data-polaris-unstyled="true">
+              <div className="Polaris-Navigation__Icon">
+              <Icon
+  source={ColorsMajorMonotone} />
+              </div><span className="Polaris-Navigation__Text">Custom watch</span>
+            </Link></div>
+          </li>
+        </ul>
+      </div>
+    </nav>
   );
 
   const loadingMarkup = isLoading ? <Loading /> : null;

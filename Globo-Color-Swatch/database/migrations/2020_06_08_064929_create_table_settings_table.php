@@ -16,6 +16,11 @@ class CreateTableSettingsTable extends Migration
         Schema::create('settings', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('shop_id');
+            $table->text('custom_swatch');
+            $table->text('custom_button');
+            $table->text('order_option');
+            $table->text('custom_swatch_collection');
+            $table->text('custom_out_of_stock');
             $table->timestamps();
         });
     }
