@@ -11,3 +11,17 @@
 .Polaris-DataTable__Table .Polaris-ButtonGroup__Item{
     margin: 0;
 }
+.Polaris-DataTable__Table th .affects_product{
+    color: red;
+    font-size: 12px;
+}
+.mt-20{
+    margin-top: 20px;
+}
+.mt-10{
+    margin-top: 10px;
+}
+.space-between{
+    display: flex;
+    justify-content: space-between;
+}

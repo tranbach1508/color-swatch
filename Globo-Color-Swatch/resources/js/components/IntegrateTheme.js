@@ -1,34 +1,60 @@
 import React, { Component } from 'react';
-import { render } from 'react-dom';
-import { SortableContainer, SortableElement } from 'react-sortable-hoc';
-import arrayMove from 'array-move';
-
-const SortableItem = SortableElement(({ value }) => <li>{value}</li>);
-
-const SortableList = SortableContainer(({ items }) => {
-    return (
-        <ul>
-            {items.map((value, index) => (
-                <SortableItem key={`item-${value}`} index={index} value={value} />
-            ))}
-        </ul>
-    );
-});
+import { Page, Layout, Card, Select,Button } from '@shopify/polaris';
 
 class IntegrateTheme extends Component {
     constructor() {
         super();
         this.state = {
-            items: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6'],
+            selected: 123
         };
-       }
-    onSortEnd = ({ oldIndex, newIndex }) => {
-        this.setState(({ items }) => ({
-            items: arrayMove(items, oldIndex, newIndex),
-        }));
+    }
+
+    handleSelectChange = (value) => {
+        this.setState({
+            selected: value
+        })
     };
+
     render() {
-        return <SortableList items={this.state.items} onSortEnd={this.onSortEnd} />;
+        var { selected } = this.state;
+        var options = [
+            { label: 'Debut', value: 123 },
+            { label: 'Simple', value: 456 },
+            { label: 'Minimal', value: 789 },
+        ];
+        return (
+            <div id="integratePage">
+                <Page title="Integrate theme">
+                    <Layout>
+                        <Layout.AnnotatedSection
+                            title="Backup theme"
+                        >
+                            <Card sectioned>
+                            <p>The app will apply a few changes to your theme. We strongly recommend you to do the setup on a backup theme to test before publishing that theme. (Click <a href="https://help.shopify.com/en/manual/using-themes/managing-themes/duplicating-themes" target="_blank">here</a> to know how to create a backup theme).</p>
+                            <br></br>
+                            <p>To undo, click on "Uninstall Filter" button so that your original theme will be reverted.</p>
+                            </Card>
+                        </Layout.AnnotatedSection>
+                        <Layout.AnnotatedSection
+                            title="Choose theme"
+                        >
+                            <Card sectioned>
+                                <Select
+                                    label="Select a theme for applying the color swatch"
+                                    options={options}
+                                    onChange={this.handleSelectChange}
+                                    value={selected}
+                                />
+                                <div className="space-between mt-10">
+                                    <Button destructive>Uninstall</Button>
+                                    <Button primary>Install</Button>
+                                </div>
+                            </Card>
+                        </Layout.AnnotatedSection>
+                    </Layout>
+                </Page>
+            </div>
+        );
     }
 }
 
