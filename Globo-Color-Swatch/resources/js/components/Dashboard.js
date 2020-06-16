@@ -10,7 +10,6 @@ export default function Dashboard() {
 
     const [items, setItem] = useState(['Color', 'Size', 'Weight']);
     const [active, setActive] = useState(false);
-    const [madatory, setMadatory] = useState(false);
     const [activeModal, setActiveModal] = useState(false);
 
     const onSortEnd = ({ oldIndex, newIndex }) => {
@@ -23,10 +22,6 @@ export default function Dashboard() {
 
     const handleEnableApp = useCallback(() => {
         setActive(!active);
-    });
-
-    const handleEnableMadatory = useCallback(() => {
-        setMadatory(!madatory);
     });
 
     const DragHandle = sortableHandle(() => <Icon source={DragHandleMinor} />);
@@ -103,7 +98,7 @@ export default function Dashboard() {
                                             <th></th>
                                             <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header" scope="col"><strong>Option</strong></th>
                                             <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--header" scope="col"><strong>Display style</strong></th>
-                                            <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--header" scope="col"></th>
+                                            <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--header" scope="col">Config</th>
                                         </tr>
                                     </thead>
                                     <SortableList useDragHandle={true} items={items} onSortEnd={onSortEnd} />
@@ -113,19 +108,6 @@ export default function Dashboard() {
                     </Layout>
                 </div>
 
-                <div className="mt-20">
-                    <Layout>
-                        <Layout.Section>
-                            <Card title="Mandatory customer select an option" sectioned>
-                                <Checkbox
-                                    label="Enable"
-                                    checked={madatory}
-                                    onChange={handleEnableMadatory}
-                                />
-                            </Card>
-                        </Layout.Section>
-                    </Layout>
-                </div>
                 <ModalOptionDetail 
                 active={activeModal}
                 handleActiveModal={handleActiveModal}

@@ -25,3 +25,114 @@
     display: flex;
     justify-content: space-between;
 }
+.list_value_option li .custom-value-option{
+    display: flex;
+}
+.custom-value-option .value-preview{
+    width: 35px;
+    height: 35px;
+}
+.custom-value-option .value-preview{
+    width: 35px;
+    height: 35px;
+    background-color: red;
+}
+.custom-value-option .value-color-1,
+.custom-value-option .value-color-2,
+.custom-value-option .value-file,
+.custom-value-option .value-url-img{
+    width: 20%;
+    height: 20%;
+    position: relative;
+}
+.custom-value-option .open_picker{
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    background-color: red;
+    z-index: 99;
+    border-radius: 5px;
+}
+.custom-value-option .upload_file,.custom-value-option .image_url{
+    padding: 7px 0;
+    height: 35px;
+    width: 35px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 99;
+    background: linear-gradient(180deg, #5c6ac4, #4959bd) !important;
+    border-color: #3f4eae !important;
+    border-radius: 3px;
+}
+.custom-value-option .color_picker{
+    width: max-content;
+    display: none;
+}
+.upload_file .Polaris-Icon svg,.image_url .Polaris-Icon svg{
+    fill: #fff;
+}
+.mr-15{
+    margin-right: 15px;
+}
+.mr-20{
+    margin-right: 20px;
+}
+input#upload_file{
+    display: none;
+}
+.flex_wrap{
+    display: flex;
+    flex-wrap: wrap;
+}
+.width-30{
+    width: 30%;
+}
+.width-70{
+    width: 70%;
+}
+.width-50{
+    width: 50%;
+}
+#customPage .Polaris-Page.Polaris-Page--fullWidth{
+    padding: 0;
+}
+#customPage .Polaris-Page.Polaris-Page--fullWidth .Polaris-Page__Content{
+    margin: 0;
+}
+#customPage .swatch_custom{
+    height: 100%;
+    overflow: auto;
+}
+.image_preview{
+    max-width: 80px;
+}
+.text_center{
+    text-align: center;
+}
+.pr-20{
+    padding-right: 20px;
+}
+.pl-20{
+    padding-left: 20px;
+}
+.image_preview.circle{
+    border-radius: 50%;
+}
+.mb-20{
+    margin-bottom: 20px;
+}
+.image_preview.small{
+    max-width: 50px;
+}
+.image_preview.medium{
+    max-width: 80px;
+}
+.image_preview.large{
+    max-width: 110px;
+}
+.swatch_size div:first-child{
+    margin-block-start: auto;
+}

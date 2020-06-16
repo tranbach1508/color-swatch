@@ -16,8 +16,8 @@ class CreateTableShopsTable extends Migration
         Schema::create('shops', function (Blueprint $table) {
             $table->increments('id');
             $table->string('url');
-            $table->string('domain');
             $table->string('admin_email');
+            $table->string('settings');
             $table->string('token');
             $table->timestamps();
         });

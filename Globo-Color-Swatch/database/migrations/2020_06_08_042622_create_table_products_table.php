@@ -17,10 +17,10 @@ class CreateTableProductsTable extends Migration
             $table->increments('id');
             $table->integer('shop_id');
             $table->string('product_id');
-            $table->string('product_handle');
             $table->string('product_name');
             $table->string('product_image');
             $table->string('product_url');
+            $table->string('product_variants');
             $table->timestamps();
         });
     }

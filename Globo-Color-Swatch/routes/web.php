@@ -19,6 +19,9 @@ Route::get('/', function () {
 Route::get('/integrate', function () {
     return view('settings');
 });
+Route::get('/custom', function () {
+    return view('settings');
+});
 // Route::prefix('api')->group(function () {
 //     Route::get('rules',    'GetApiController@getCondition');
 //     Route::get('getform',    'GetApiController@getForm');
