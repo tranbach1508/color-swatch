@@ -11,15 +11,24 @@
 .Polaris-DataTable__Table .Polaris-ButtonGroup__Item{
     margin: 0;
 }
-.Polaris-DataTable__Table th .affects_product{
-    color: red;
-    font-size: 12px;
+.affects_product{
+    color: #637381;
+    font-size: 10px;
 }
 .mt-20{
     margin-top: 20px;
 }
 .mt-10{
     margin-top: 10px;
+}
+.mr-50{
+    margin-right: 50px;
+}
+.mr-5{
+    margin-right: 5px;
+}
+.mr-25{
+    margin-right: 25px;
 }
 .space-between{
     display: flex;
@@ -28,6 +37,9 @@
 .list_value_option li .custom-value-option{
     display: flex;
 }
+.list_value_option li{
+    list-style: none;
+}
 .custom-value-option .value-preview{
     width: 35px;
     height: 35px;
@@ -37,15 +49,26 @@
     height: 35px;
     background-color: red;
 }
-.custom-value-option .value-color-1,
-.custom-value-option .value-color-2,
+
 .custom-value-option .value-file,
+.custom-value-option .one-color,
 .custom-value-option .value-url-img{
-    width: 20%;
-    height: 20%;
+    width: 25%;
+    height: 20px;
     position: relative;
 }
-.custom-value-option .open_picker{
+.custom-value-option .two-colors .value-color-1,
+.custom-value-option .two-colors .value-color-2,
+.custom-value-option .two-colors{
+    width: 50%;
+    display: flex;
+    position: relative;
+}
+.custom-value-option .open_picker,.border_color .open_picker{
+    top: 3px;
+    right: 3px;
+}
+.open_picker{
     height: 30px;
     width: 30px;
     position: absolute;
@@ -54,6 +77,11 @@
     background-color: red;
     z-index: 99;
     border-radius: 5px;
+    cursor: pointer;
+}
+.border_color .open_picker, .border_color .open_picker,.custom_for_option .custom .open_picker{
+    top: 27px;
+    right: 3px;
 }
 .custom-value-option .upload_file,.custom-value-option .image_url{
     padding: 7px 0;
@@ -67,9 +95,9 @@
     border-color: #3f4eae !important;
     border-radius: 3px;
 }
-.custom-value-option .color_picker{
-    width: max-content;
-    display: none;
+.color_picker{
+    position: absolute;
+    z-index: 999;
 }
 .upload_file .Polaris-Icon svg,.image_url .Polaris-Icon svg{
     fill: #fff;
@@ -87,8 +115,20 @@ input#upload_file{
     display: flex;
     flex-wrap: wrap;
 }
+.flex{
+    display: flex;
+}
+.width-25{
+    width: 25%;
+}
+.width-75{
+    width: 75%;
+}
 .width-30{
     width: 30%;
+}
+.width-32{
+    width: 32%;
 }
 .width-70{
     width: 70%;
@@ -112,27 +152,91 @@ input#upload_file{
 .text_center{
     text-align: center;
 }
+.width-100{
+    width: 100%;
+}
 .pr-20{
     padding-right: 20px;
 }
 .pl-20{
     padding-left: 20px;
 }
-.image_preview.circle{
+.pl-0{
+    padding-left: 0px;
+}
+.circle .image_preview{
     border-radius: 50%;
 }
 .mb-20{
-    margin-bottom: 20px;
+    margin-bottom: 20px !important;
 }
-.image_preview.small{
+.mb-10{
+    margin-bottom: 10px;
+}
+.small .image_preview{
     max-width: 50px;
 }
-.image_preview.medium{
+.medium .image_preview{
     max-width: 80px;
 }
-.image_preview.large{
+.large .image_preview{
     max-width: 110px;
 }
 .swatch_size div:first-child{
     margin-block-start: auto;
+}
+.relative{
+    position: relative;
+}
+.flex_wrap.border_color.relative > div:first-child{
+    width: 100%;
+}
+.mg_auto{
+    margin: 0 auto;
+}
+.background_effect .add_glow img:hover{
+    box-shadow: 0 0 10px 1px;
+}
+.background_effect .add_shadow img:hover{
+    box-shadow: 0 10px 10px -10px;
+}
+.zoom_image .zoom img:hover{
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+}
+.zoom_image .zoom > div:first-child{
+    max-width: 80px;
+    max-height: 80px;
+    margin: 0 auto 5px auto;
+    overflow: hidden;
+}
+.single .image_preview{
+    border: 1px solid #000;
+}
+.double .image_preview{
+    border: 1px solid #000;
+}
+.double > div:first-child{
+    width: 86px;
+    height: 86px;
+    padding: 2px;
+    border: 1px solid #000;
+}
+.swatch_preview .product_image{
+    width: 100%;
+}
+.Polaris-DataTable__Cell .Polaris-Select__Content{
+    min-width: 250px !important;
+}
+.select-type-swatch .Polaris-Select__Content{
+    min-width: 125px !important;
+}
+.space-between{
+    justify-content: space-between;
+}
+.modal_footer{
+    margin-left: -20px;
+    margin-right: -20px;
+    padding: 20px 20px 0 20px;
+    border-top: 1px solid #dfe3e8;
 }

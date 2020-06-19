@@ -18,6 +18,7 @@ class CreateOptionsTable extends Migration
             $table->integer('shop_id');
             $table->string('name');
             $table->integer('display_style');
+            $table->text('settings');
             $table->timestamps();
         });
     }

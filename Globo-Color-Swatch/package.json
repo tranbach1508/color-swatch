@@ -29,7 +29,9 @@
     },
     "dependencies": {
         "@shopify/polaris": "^4.25.0",
+        "antd": "^4.3.4",
         "array-move": "^2.2.2",
+        "react-input-switch": "^2.2.2",
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0",
         "react-sortable-hoc": "^1.11.0"

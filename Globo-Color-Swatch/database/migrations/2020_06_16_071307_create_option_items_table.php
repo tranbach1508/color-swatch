@@ -17,7 +17,8 @@ class CreateOptionItemsTable extends Migration
             $table->increments('id');
             $table->integer('option_id');
             $table->string('value');
-            $table->string('custom');
+            $table->integer('select_type');
+            $table->text('custom');
             $table->timestamps();
         });
     }

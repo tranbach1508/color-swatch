@@ -11,80 +11,129 @@ class Shop extends Seeder
      */
     public function run()
     {
-        // $setting = 
-        // {
-        //     enable: true,
-        //     theme_selected: 81486217319,
-        //     enable_collection_page: true,
-        //     product_page: {
-        //         customize_swatch: 
-        //         {
-        //             swatch_shape: "crcle" || "square",
-        //             swatch_size: "small" || "medium" || "large",
-        //             border_color: {
-        //                 selected: "#fff",
-        //                 not_selected: "#000"
-        //             },
-        //             border_style: "none" || "single" || "double",
-        //             hover _effects: {
-        //                 background: "not effect" || "add glow" || "add shadow",
-        //                 zoom_image: "no zoom" || "2x" || "3x",
-        //                 size_change: "no change" || "reduce size" || "increase size"
-        //             }
-        //         }
-        //         customize_button: 
-        //         {
-        //             button_shape: "crcle" || "square" || "rectangle",
-        //             button_size: "small" || "medium" || "large",
-        //             border_color: {
-        //                 selected: "#fff",
-        //                 not_selected: "#000"
-        //             },
-        //             text_style: "Default" || "Lowercase" || "Uppercase",
-        //             text_color: {
-        //                 selected: "#fff",
-        //                 not_selected: "#000"
-        //             },
-        //             hover _effects: {
-        //                 background: "not effect" || "add glow" || "add shadow",
-        //             }
-        //         },
-        //     },
-        //     collection_page:{
-        //         customize_swatch: 
-        //         {
-        //             swatch_shape: "crcle" || "square",
-        //             swatch_size: "small" || "medium" || "large",
-        //             border_color: {
-        //                 selected: "#fff",
-        //                 not_selected: "#000"
-        //             },
-        //             border_style: "none" || "single" || "double",
-        //             hover _effects: {
-        //                 background: "not effect" || "add glow" || "add shadow",
-        //                 zoom_image: "no zoom" || "2x" || "3x",
-        //                 size_change: "no change" || "reduce size" || "increase size"
-        //             }
-        //         }
-        //         customize_button: 
-        //         {
-        //             button_shape: "crcle" || "square" || "rectangle",
-        //             button_size: "small" || "medium" || "large",
-        //             border_color: {
-        //                 selected: "#fff",
-        //                 not_selected: "#000"
-        //             },
-        //             text_style: "Default" || "Lowercase" || "Uppercase",
-        //             text_color: {
-        //                 selected: "#fff",
-        //                 not_selected: "#000"
-        //             },
-        //             hover _effects: {
-        //                 background: "not effect" || "add glow" || "add shadow",
-        //             }
-        //         },
-        //     }
-        //     out of stock variant: "1:same as other variants" || "2:cross-out out of the stock variants" || "3:grey-out out of the stock variants" || "don't show out of the stock variants"
-        // }
+        DB::table('shops')->insert([
+            [
+                'id'=>1,
+                'url'=>'globoliquid.myshopify.com',
+                'admin_email'=>'contact@globosoftware.net',
+                'token'=>'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',
+                'theme_selected'=>'81486217319',
+                'settings' =>'{ "enable":true, "enable_collection_page":true, "product_page": { "customize_swatch": { "swatch_shape": "crcle", "swatch_size":"small", "border_style":"none", "border_color": { "normal": "#000", "hover":"#000", "selected":"#fff" }, "hover_effects": { "background":"not effect", "zoom_image":"no zoom", "size_change":"no change", } }, "customize_button": { "button_shape": "crcle", "button_size":"small" , "border_color": { "normal": "#000", "hover":"#000", "selected":"#fff" }, "text_style": "Default", "text_color": { "normal": "#000", "hover":"#000", "selected":"#fff" }, "backgound_color": { "normal": "#000", "hover":"#000", "selected":"#fff" }, "hover_effects": { "background":"not effect", } }, }, "collection_page": { "options": ["Color", "Size"], "customize_swatch": { "swatch_shape":"crcle", "swatch_size":"small", "border_color": { "normal": "#000", "hover":"#000", "selected":"#fff" }, "border_style": "none" , "hover_effects": { "background":"not effect", "zoom_image":"no zoom", "size_change": "no change" } }, "customize_button": { "button_shape": "crcle", "button_size":"small", "border_color": { "normal": "#000", "hover":"#000", "selected":"#fff" }, "text_style": "Default", "text_color": { "normal": "#000", "hover":"#000", "selected":"#fff" }, "backgound_color": { "normal": "#000", "hover":"#000", "selected":"#fff" }, "hover_effects": { "background":"not effect" } } }, "out_of_stock" : { "hide": false, "opacity": 0.5, "cross-out": true, "grey-out": true } }'
+            ],
+            
+            ]);
+            
+
+            // {
+            //         enable:true,
+            //         enable_collection_page:true,
+            //         product_page:
+            //         {
+            //             customize_swatch:
+            //             {
+            //                 swatch_shape: "crcle",   
+            //                 swatch_size:"small", 
+            //                 border_style:"none", 
+            //                 border_color:
+            //                 {
+            //                     normal: "#000",
+            //                     hover:"#000",
+            //                     selected:"#fff"
+            //                 },
+            //                 hover_effects:
+            //                 {
+            //                     background:"not effect",  
+            //                     zoom_image:"no zoom",  
+            //                     size_change:"no change", 
+            //                 }
+            //             },
+            //             customize_button:
+            //             {
+            //                 button_shape: "crcle", 
+            //                 button_size:"small" , 
+            //                 border_color:
+            //                 {
+            //                     normal: "#000",
+            //                     hover:"#000",
+            //                     selected:"#fff"
+            //                 },
+            //                 text_style: "Default",
+            //                 text_color:
+            //                 {
+            //                     normal: "#000",
+            //                     hover:"#000",
+            //                     selected:"#fff"
+            //                 },
+            //                 backgound_color:
+            //                 {
+            //                     normal: "#000",
+            //                     hover:"#000",
+            //                     selected:"#fff"
+            //                 },
+            //                 hover_effects:
+            //                 {
+            //                     background:"not effect", 
+            //                 }
+            //             },
+            //         },
+            //         collection_page:
+            //         {
+            //             options: ["Color", "Size"],
+            //             customize_swatch:
+            //             {
+            //                 swatch_shape:"crcle", 
+            //                 swatch_size:"small", 
+            //                 border_color:
+            //                 {
+            //                     normal: #000
+            //                     hover:"#000"
+            //                     selected:"#fff"
+            //                 },
+            //                 border_style: "none" ,
+            //                 hover_effects:
+            //                 {
+            //                     background:"not effect", 
+            //                     zoom_image:"no zoom",
+            //                     size_change: "no change", 
+            //                 }
+            //             },
+            //             customize_button:{
+            //                 button_shape: "crcle",
+            //                 button_size:"small", 
+            //                 border_color:
+            //                 {
+            //                     normal: "#000",
+            //                     hover:"#000",
+            //                     selected:"#fff"
+            //                 },
+            //                 text_style: "Default",
+            //                 text_color:
+            //                 {
+            //                     normal: "#000",
+            //                     hover:"#000",
+            //                     selected:"#fff"
+            //                 },
+            //                 backgound_color:
+            //                 {
+            //                     normal: "#000",
+            //                     hover:"#000",
+            //                     selected:"#fff"
+            //                 },
+            //                 hover_effects:
+            //                 {
+            //                     background:"not effect", 
+            //                 }
+            //             },
+            //         }
+            //         out_of_stock :{
+            //             hide: false,
+            //             opacity: 0.5,
+            //             cross-out: true | false,
+            //             grey-out: true | false,
+            //         }
+            //     }
+
+            
+
     }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { useCallback, useRef, useState } from 'react';
-import { Page, Layout, Card, Icon, TextStyle, SettingToggle, Checkbox } from '@shopify/polaris';
+import { Page, Layout, Card, Icon, TextStyle, SettingToggle, Select } from '@shopify/polaris';
 import { ToolsMajorMonotone, DragHandleMinor } from '@shopify/polaris-icons';
 import { SortableContainer, SortableElement, sortableHandle } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
@@ -24,6 +24,17 @@ export default function Dashboard() {
         setActive(!active);
     });
 
+    const [selected, setSelected] = useState('1');
+
+    const handleSelectChange = useCallback((value) => setSelected(value), []);
+
+    const options = [
+        { label: 'Color or custom image swatch', value: '1' },
+        { label: 'Automated variant image swatch', value: '2' },
+        { label: 'Button', value: '3' },
+        { label: 'Dropdown list', value: '4' },
+    ];
+
     const DragHandle = sortableHandle(() => <Icon source={DragHandleMinor} />);
 
     const SortableItem = SortableElement(({ value }) => {
@@ -32,17 +43,11 @@ export default function Dashboard() {
                 <td><DragHandle></DragHandle></td>
                 <th className="Polaris-DataTable__Cell Polaris-DataTable__Cell--firstColumn" scope="row">{value} <a className="affects_product" href="integrate">(affects only 1 product)</a></th>
                 <td className="Polaris-DataTable__Cell">
-                    <div className="Polaris-Select"><select id="PolarisSelect2" className="Polaris-Select__Input" aria-invalid="false">
-                        <option value="today">Color or custom image swatch</option>
-                        <option value="yesterday">Automated variant image swatch</option>
-                        <option value="lastWeek">Button</option>
-                        <option value="lastWeek">Dropdown list</option>
-                    </select>
-                        <div className="Polaris-Select__Content" aria-hidden="true"><span className="Polaris-Select__SelectedOption">Color or custom image swatch</span><span className="Polaris-Select__Icon"><span className="Polaris-Icon"><svg viewBox="0 0 20 20" className="Polaris-Icon__Svg" focusable="false" aria-hidden="true">
-                            <path d="M13 8l-3-3-3 3h6zm-.1 4L10 14.9 7.1 12h5.8z" fillRule="evenodd" />
-                        </svg></span></span></div>
-                        <div className="Polaris-Select__Backdrop" />
-                    </div>
+                    <Select
+                        options={options}
+                        onChange={handleSelectChange}
+                        value={selected}
+                    />
                 </td>
                 <td className="Polaris-DataTable__Cell">
                     <div className="Polaris-ButtonGroup__Item">
@@ -98,19 +103,19 @@ export default function Dashboard() {
                                             <th></th>
                                             <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header" scope="col"><strong>Option</strong></th>
                                             <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--header" scope="col"><strong>Display style</strong></th>
-                                            <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--header" scope="col">Config</th>
+                                            <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--header" scope="col"><strong>Config</strong></th>
                                         </tr>
                                     </thead>
-                                    <SortableList useDragHandle={true} items={items} onSortEnd={onSortEnd} />
+                                    <SortableList useDragHandle={true} items={items} onSortEnd={onSortEnd} lockAxis="y" />
                                 </table>
                             </Card>
                         </Layout.Section>
                     </Layout>
                 </div>
 
-                <ModalOptionDetail 
-                active={activeModal}
-                handleActiveModal={handleActiveModal}
+                <ModalOptionDetail
+                    active={activeModal}
+                    handleActiveModal={handleActiveModal}
                 ></ModalOptionDetail>
             </Page>
         </div>

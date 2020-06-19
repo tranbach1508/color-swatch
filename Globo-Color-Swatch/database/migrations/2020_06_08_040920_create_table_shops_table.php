@@ -17,7 +17,8 @@ class CreateTableShopsTable extends Migration
             $table->increments('id');
             $table->string('url');
             $table->string('admin_email');
-            $table->string('settings');
+            $table->string('theme_selected');
+            $table->text('settings');
             $table->string('token');
             $table->timestamps();
         });
