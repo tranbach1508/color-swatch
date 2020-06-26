@@ -8,7 +8,20 @@ import ModalOptionDetail from './ModalOptionDetail';
 
 export default function Dashboard() {
 
-    const [items, setItem] = useState(['Color', 'Size', 'Weight']);
+    const [items, setItem] = useState([
+        {
+            name: 'Color',
+            value: 'color'
+        },
+        {
+            name: 'Size',
+            value: 'size'
+        },
+        {
+            name: 'Weight',
+            value: 'weight'
+        },
+    ]);
     const [active, setActive] = useState(false);
     const [activeModal, setActiveModal] = useState(false);
 
@@ -24,9 +37,18 @@ export default function Dashboard() {
         setActive(!active);
     });
 
-    const [selected, setSelected] = useState('1');
+    const [selectedDisplayStyle, setSelectedDisplayStyle] = useState({
+        color: 1,
+        size: 1,
+        weight: 1
+    });
 
-    const handleSelectChange = useCallback((value) => setSelected(value), []);
+    const handleSelectChange = (value,option) =>{
+        setSelectedDisplayStyle({
+            ...selectedDisplayStyle,
+            [option]: value
+        })
+    };
 
     const options = [
         { label: 'Color or custom image swatch', value: '1' },
@@ -34,19 +56,31 @@ export default function Dashboard() {
         { label: 'Button', value: '3' },
         { label: 'Dropdown list', value: '4' },
     ];
+    // const options_size = [
+    //     { label: 'Color or custom image swatch', value: '1' },
+    //     { label: 'Automated variant image swatch', value: '2' },
+    //     { label: 'Button', value: '3' },
+    //     { label: 'Dropdown list', value: '4' },
+    // ];
+    // const options_weight = [
+    //     { label: 'Color or custom image swatch', value: '1' },
+    //     { label: 'Automated variant image swatch', value: '2' },
+    //     { label: 'Button', value: '3' },
+    //     { label: 'Dropdown list', value: '4' },
+    // ];
 
     const DragHandle = sortableHandle(() => <Icon source={DragHandleMinor} />);
 
-    const SortableItem = SortableElement(({ value }) => {
+    const SortableItem = SortableElement((option) => {
         return (
             <tr className="Polaris-DataTable__TableRow">
                 <td><DragHandle></DragHandle></td>
-                <th className="Polaris-DataTable__Cell Polaris-DataTable__Cell--firstColumn" scope="row">{value} <a className="affects_product" href="integrate">(affects only 1 product)</a></th>
+                <th className="Polaris-DataTable__Cell Polaris-DataTable__Cell--firstColumn" scope="row">{option.value.name} <a className="affects_product" href="integrate">(affects only 1 product)</a></th>
                 <td className="Polaris-DataTable__Cell">
                     <Select
                         options={options}
-                        onChange={handleSelectChange}
-                        value={selected}
+                        onChange={(value) => handleSelectChange(value,option.value.value)}
+                        value={selectedDisplayStyle[option.value.value]}
                     />
                 </td>
                 <td className="Polaris-DataTable__Cell">
@@ -66,7 +100,7 @@ export default function Dashboard() {
         return (
             <tbody>
                 {items.map((value, index) => (
-                    <SortableItem key={`item-${value}`} index={index} value={value} />
+                    <SortableItem key={`item-${value.value}`} index={index} value={value} />
                 ))}
             </tbody>
         );

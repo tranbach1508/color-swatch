@@ -24,7 +24,7 @@ class Option extends Seeder
                 'shop_id'=>1,
                 'name'=>'color',
                 'display_style'=>1,
-                'settings'=>'{ "status" : false,"type":"swatch","button_shape":"crcle", "button_size":"small", "border_color":{ "normal": "#000", "hover":"#000", "selected":"#fff" }, "text_style":"Default", "text_color":{ "normal": "#000", "hover":"#000", "selected":"#fff" }, "backgound_color":{ "normal": "#000", "hover":"#000", "selected":"#fff" }, "hover_effects":{ "background":"not effect", } }'
+                'settings'=>'{"status" : true, "type": "swatch","swatch_shape":"crcle","swatch_size":"small","border_style":"none","border_color":{"normal": "#000","hover":"#000","selected":"#fff"},"hover_effects":{"background":"not effect","zoom_image":"no zoom","size_change":"no change"}},{"button_size":"small","border_style": "single","border_color":{"normal": "#000","hover":"#000","selected":"#fff"},"text_style":"Default","text_color":{"normal": "#000","hover":"#000","selected":"#fff"},"backgound_color":{"normal": "#000","hover":"#000","selected":"#fff"},"hover_effects":{"background":"not effect",}}'
             ],
 
             // {
@@ -32,12 +32,12 @@ class Option extends Seeder
 			//  "type": "swatch",
 			// 	"swatch_shape":"crcle",
 			// 	"swatch_size":"small",
+			// 	"border_style":"none",
 			// 	"border_color":{
 			// 		"normal": "#000",
 			// 		"hover":"#000",
 			// 		"selected":"#fff"
 			// 	},
-			// 	"border_style":"none",
 			// 	"hover_effects":{
 			// 		"background":"not effect",
 			// 		"zoom_image":"no zoom",
@@ -45,8 +45,8 @@ class Option extends Seeder
 			// 	}
             // },
             // {
-			// 	"button_shape":"crcle",
 			// 	"button_size":"small",
+			// "border_style": "single",
 			// 	"border_color":{
 			// 		"normal": "#000",
 			// 		"hover":"#000",

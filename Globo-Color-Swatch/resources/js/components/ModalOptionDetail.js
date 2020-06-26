@@ -1,28 +1,9 @@
 import React, { Component, useCallback, useRef, useState, useEffect } from 'react';
-import { Modal, ColorPicker, TextField, Icon, Select, Card,Button } from '@shopify/polaris';
+import { Modal, TextField, Icon, Select, Card, Button } from '@shopify/polaris';
 import { ExportMinor, LinkMinor } from '@shopify/polaris-icons';
 import { Switch } from 'antd';
 import 'antd/dist/antd.css';
-
-function useOutsideAlerter(ref) {
-    useEffect(() => {
-        /**
-         * Alert if clicked on outside of element
-         */
-        function handleClickOutside(event) {
-            if (ref.current && !ref.current.contains(event.target)) {
-                alert("You clicked outside of me!");
-            }
-        }
-
-        // Bind the event listener
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            // Unbind the event listener on clean up
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [ref]);
-}
+import ColorPickers from './ColorPickers';
 
 export default function Dashboard(props) {
 
@@ -44,16 +25,73 @@ export default function Dashboard(props) {
     const [buttonHoverEffect, setButtonHoverEffect] = useState({
         background: "not effect",
     })
-    const [color, setColor] = useState({
-        hue: 300,
-        brightness: 1,
-        saturation: 0.7,
-        alpha: 0.7,
-    });
-    const [displayColorPicker,setDisplayColorPicker] = useState({
+
+    const [displayColorPicker, setDisplayColorPicker] = useState({
         one_color: false,
-        two_color: false
+        two_color: false,
+        swatch_border_color_nomal: false,
+        swatch_border_color_hover: false,
+        swatch_border_color_selected: false,
+        button_border_color_nomal: false,
+        button_border_color_hover: false,
+        button_border_color_selected: false,
+        button_text_color_nomal: false,
+        button_text_color_hover: false,
+        button_text_color_selected: false,
+        button_background_color_nomal: false,
+        button_background_color_hover: false,
+        button_background_color_selected: false,
+        two_color: false,
+        two_color: false,
     });
+
+    const [colorPickerValue,setColorPickerValue] = useState({
+        one_color: {
+            hex: "#000",
+        },
+        two_color: {
+            hex: "#000",
+        },
+        swatch_border_color_nomal: {
+            hex: "#000",
+        },
+        swatch_border_color_hover: {
+            hex: "#000",
+        },
+        swatch_border_color_selected: {
+            hex: "#000",
+        },
+        button_border_color_nomal: {
+            hex: "#000",
+        },
+        button_border_color_hover: {
+            hex: "#000",
+        },
+        button_border_color_selected: {
+            hex: "#000",
+        },
+        button_text_color_nomal: {
+            hex: "#000",
+        },
+        button_text_color_hover: {
+            hex: "#000",
+        },
+        button_text_color_selected: {
+            hex: "#000",
+        },
+        button_background_color_nomal: {
+            hex: "#000",
+        },
+        button_background_color_hover: {
+            hex: "#000",
+        },
+        button_background_color_seleted: {
+            hex: "#000",
+        },
+    })
+
+    const [importOldSwatch, setImportOldSwatch] = useState(false);
+    const [importOldSwatchTheme, setImportOldSwatchTheme] = useState('1');
 
     useEffect(
         () => {
@@ -61,20 +99,33 @@ export default function Dashboard(props) {
         },
         [props.active], // giá trị được subcrive
     );
-    const openColorPicker = useCallback((field, value) =>{
+    const openColorPicker = useCallback((field) => {
         setDisplayColorPicker({
             ...displayColorPicker,
-            [field]: value
+            [field]: !displayColorPicker[field]
         })
     })
     const handleChange = useCallback(() => {
         setActive(!active);
         props.handleActiveModal();
     });
-    const handleChangeColor = useCallback(setColor, []);
     const handleSelectChange = useCallback((value) => {
         setSeletedTypeSwatch(value)
     }, []);
+
+    const inputColorPickerValue = (field,newValue) =>{
+        setColorPickerValue({
+            ...colorPickerValue,
+            [field]: {hex:newValue}
+        })
+    }
+
+    const changeColorPickerValue = (field,value) => {
+        setColorPickerValue({
+            ...colorPickerValue,
+            [field]: value
+        })
+    }
 
     const handleChangeCustomize = useCallback(() => setCustomize((customize) => !customize), []);
     const changeSelected = (state, value, field) => {
@@ -152,6 +203,13 @@ export default function Dashboard(props) {
         { label: 'Upload file', value: '3' },
         { label: 'Image url', value: '4' },
     ];
+    const swatch_old_theme = [
+        { label: 'Select theme import swatch', value: '1' },
+        { label: 'Debut', value: '2' },
+        { label: 'Minimal', value: '3' },
+        { label: 'Simple', value: '4' },
+        { label: 'Test', value: '5' },
+    ];
 
     const GetCustomize = () => {
         if (customize == true) {
@@ -169,44 +227,56 @@ export default function Dashboard(props) {
                     </div>
                 </div>
             )
-        }else{
-            return(
+        } else {
+            return (
                 <div></div>
             )
         }
 
     }
 
+    const GetImportOldSwatch = () => {
+        if (importOldSwatch) {
+            return (
+                <div className="flex">
+                    <Button primary>Import swatch</Button>
+                    <Select
+                        options={swatch_old_theme}
+                        onChange={(value) => setImportOldSwatchTheme(value)}
+                        value={importOldSwatchTheme}
+                    />
+                </div>
+            )
+        }else{
+            return(
+                <div></div>
+            )
+        }
+    }
+
     const wrapperRef = useRef(null);
-    useOutsideAlerter(wrapperRef);
 
     const GetTypeSwatch = () => {
         if (seletedTypeSwatch == "1") {
             return (
                 <div className="one-color mr-50">
-                    <TextField value={"fasd"} onChange={handleChange}></TextField>
-                    <div className="open_picker" onClick={()=>openColorPicker("one_color", true)}></div>
-                    <div className="color_picker" style={{display: displayColorPicker.one_color ? 'block' : 'none'}}>
-                        <ColorPicker ref={wrapperRef} onChange={handleChangeColor} color={color} />
-                    </div>
+                    <TextField value={colorPickerValue.one_color.hex} onChange={(value) =>inputColorPickerValue("one_color",value)}></TextField>
+                    <div className="open_picker" onClick={() => openColorPicker("one_color")} style={{backgroundColor: colorPickerValue.one_color.hex}}></div>
+                    <ColorPickers field={"one_color"} changeColorPickerValue={(field,value) => changeColorPickerValue(field,value)} active={displayColorPicker.one_color}></ColorPickers>
                 </div>
             )
         } else if (seletedTypeSwatch == "2") {
             return (
                 <div className="two-colors">
                     <div className="value-color-1 mr-15 width-50 flex relative">
-                        <TextField value={"fasd"} onChange={handleChange}></TextField>
-                        <div className="open_picker"></div>
-                        <div className="color_picker">
-                            <ColorPicker onChange={handleChangeColor} color={color} />
-                        </div>
+                        <TextField  value={colorPickerValue.one_color.hex} onChange={(value) =>inputColorPickerValue("one_color",value)}></TextField>
+                        <div className="open_picker" onClick={() => openColorPicker("one_color")} style={{backgroundColor: colorPickerValue.one_color.hex}}></div>
+                        <ColorPickers field={"one_color"} changeColorPickerValue={(field,value) => changeColorPickerValue(field,value)} active={displayColorPicker.one_color}></ColorPickers>
                     </div>
                     <div className="value-color-2 mr-15 width-50 flex relative">
-                        <TextField value={"fasd"} onChange={handleChange}></TextField>
-                        <div className="open_picker"></div>
-                        <div className="color_picker">
-                            <ColorPicker onChange={handleChangeColor} color={color} />
-                        </div>
+                        <TextField  value={colorPickerValue.one_color.hex} onChange={(value) =>inputColorPickerValue("two_color",value)}></TextField>
+                        <div className="open_picker" onClick={() => openColorPicker("two_color")} style={{backgroundColor: colorPickerValue.two_color.hex}}></div>
+                        <ColorPickers field={"two_color"} changeColorPickerValue={(field,value) => changeColorPickerValue(field,value)} active={displayColorPicker.two_color}></ColorPickers>
                     </div>
                 </div>
 
@@ -214,7 +284,7 @@ export default function Dashboard(props) {
         } else if (seletedTypeSwatch == "3") {
             return (
                 <div className="value-file mr-50">
-                    <TextField value={"fasd"} onChange={handleChange}></TextField>
+                    <TextField ></TextField>
                     <input type="file" id="upload_file"></input>
                     <div className="upload_file">
                         <label htmlFor="upload_file"><Icon source={ExportMinor} /></label>
@@ -224,7 +294,7 @@ export default function Dashboard(props) {
         } else {
             return (
                 <div className="value-url-img mr-50">
-                    <TextField value={"fasd"} onChange={handleChange}></TextField>
+                    <TextField></TextField>
                     <div className="image_url">
                         <Icon source={LinkMinor} />
                     </div>
@@ -267,25 +337,19 @@ export default function Dashboard(props) {
                         </div>
                         <div className="width-70 flex space-between">
                             <div className="width-30 relative">
-                                <TextField label="Nomal" value={"fasd"} onChange={handleChange}></TextField>
-                                <div className="open_picker"></div>
-                                <div className="color_picker" style={{ display: 'none' }}>
-                                    <ColorPicker onChange={handleChangeColor} color={color} />
-                                </div>
+                                <TextField label="Nomal"  value={colorPickerValue.one_color.hex} onChange={(value) =>inputColorPickerValue("swatch_border_color_nomal",value)}></TextField>
+                                <div className="open_picker" onClick={() => openColorPicker("swatch_border_color_nomal")} style={{backgroundColor: colorPickerValue.swatch_border_color_nomal.hex}}></div>
+                                <ColorPickers field={"swatch_border_color_nomal"} changeColorPickerValue={(field,value) => changeColorPickerValue(field,value)} active={displayColorPicker.swatch_border_color_nomal}></ColorPickers>
                             </div>
                             <div className="width-30 relative">
-                                <TextField label="Hover" value={"fasd"} onChange={handleChange}></TextField>
-                                <div className="open_picker"></div>
-                                <div className="color_picker" style={{ display: 'none' }}>
-                                    <ColorPicker onChange={handleChangeColor} color={color} />
-                                </div>
+                                <TextField label="Hover"  value={colorPickerValue.one_color.hex} onChange={(value) =>inputColorPickerValue("swatch_border_color_hover",value)}></TextField>
+                                <div className="open_picker" onClick={() => openColorPicker("swatch_border_color_hover")} style={{backgroundColor: colorPickerValue.swatch_border_color_hover.hex}}></div>
+                                <ColorPickers field={"swatch_border_color_hover"} changeColorPickerValue={(field,value) => changeColorPickerValue(field,value)} active={displayColorPicker.swatch_border_color_hover}></ColorPickers>
                             </div>
                             <div className="width-30 relative">
-                                <TextField label="Selected" value={"fasd"} onChange={handleChange}></TextField>
-                                <div className="open_picker"></div>
-                                <div className="color_picker" style={{ display: 'none' }}>
-                                    <ColorPicker onChange={handleChangeColor} color={color} />
-                                </div>
+                                <TextField label="Selected"  value={colorPickerValue.one_color.hex} onChange={(value) =>inputColorPickerValue("swatch_border_color_selected",value)}></TextField>
+                                <div className="open_picker" onClick={() => openColorPicker("swatch_border_color_selected")} style={{backgroundColor: colorPickerValue.swatch_border_color_selected.hex}}></div>
+                                <ColorPickers field={"swatch_border_color_selected"} changeColorPickerValue={(field,value) => changeColorPickerValue(field,value)} active={displayColorPicker.swatch_border_color_selected}></ColorPickers>
                             </div>
                         </div>
                     </div>
@@ -334,7 +398,7 @@ export default function Dashboard(props) {
                     </div>
                 </div>
             )
-        } else if (displayType == "button" && customize== true) {
+        } else if (displayType == "button" && customize == true) {
             return (
                 <div>
                     <div className="flex mb-10">
@@ -367,25 +431,19 @@ export default function Dashboard(props) {
                         </div>
                         <div className="width-70 flex space-between">
                             <div className="width-30 relative">
-                                <TextField label="Nomal" value={"fasd"} onChange={handleChange}></TextField>
-                                <div className="open_picker"></div>
-                                <div className="color_picker" style={{ display: 'none' }}>
-                                    <ColorPicker onChange={handleChangeColor} color={color} />
-                                </div>
+                                <TextField label="Nomal"  value={colorPickerValue.one_color.hex} onChange={(value) =>inputColorPickerValue("button_border_color_nomal",value)}></TextField>
+                                <div className="open_picker" onClick={() => openColorPicker("button_border_color_nomal")} style={{backgroundColor: colorPickerValue.button_border_color_nomal.hex}}></div>
+                                <ColorPickers field={"button_border_color_nomal"} changeColorPickerValue={(field,value) => changeColorPickerValue(field,value)} active={displayColorPicker.button_border_color_nomal}></ColorPickers>
                             </div>
                             <div className="width-30 relative">
-                                <TextField label="Hover" value={"fasd"} onChange={handleChange}></TextField>
-                                <div className="open_picker"></div>
-                                <div className="color_picker" style={{ display: 'none' }}>
-                                    <ColorPicker onChange={handleChangeColor} color={color} />
-                                </div>
+                                <TextField label="Hover"  value={colorPickerValue.one_color.hex} onChange={(value) =>inputColorPickerValue("button_border_color_hover",value)}></TextField>
+                                <div className="open_picker" onClick={() => openColorPicker("button_border_color_hover")} style={{backgroundColor: colorPickerValue.button_border_color_hover.hex}}></div>
+                                <ColorPickers field={"button_border_color_hover"} changeColorPickerValue={(field,value) => changeColorPickerValue(field,value)} active={displayColorPicker.button_border_color_hover}></ColorPickers>
                             </div>
                             <div className="width-30 relative">
-                                <TextField label="Selected" value={"fasd"} onChange={handleChange}></TextField>
-                                <div className="open_picker"></div>
-                                <div className="color_picker" style={{ display: 'none' }}>
-                                    <ColorPicker onChange={handleChangeColor} color={color} />
-                                </div>
+                                <TextField label="Selected"  value={colorPickerValue.one_color.hex} onChange={(value) =>inputColorPickerValue("button_border_color_selected",value)}></TextField>
+                                <div className="open_picker" onClick={() => openColorPicker("button_border_color_selected")} style={{backgroundColor: colorPickerValue.button_border_color_selected.hex}}></div>
+                                <ColorPickers field={"button_border_color_selected"} changeColorPickerValue={(field,value) => changeColorPickerValue(field,value)} active={displayColorPicker.button_border_color_selected}></ColorPickers>
                             </div>
                         </div>
                     </div>
@@ -407,25 +465,19 @@ export default function Dashboard(props) {
                         </div>
                         <div className="width-70 flex space-between">
                             <div className="width-30 relative">
-                                <TextField label="Nomal" value={"fasd"} onChange={handleChange}></TextField>
-                                <div className="open_picker"></div>
-                                <div className="color_picker" style={{ display: 'none' }}>
-                                    <ColorPicker onChange={handleChangeColor} color={color} />
-                                </div>
+                                <TextField label="Nomal"  value={colorPickerValue.one_color.hex} onChange={(value) =>inputColorPickerValue("button_text_color_nomal",value)}></TextField>
+                                <div className="open_picker" onClick={() => openColorPicker("button_text_color_nomal")} style={{backgroundColor: colorPickerValue.button_text_color_nomal.hex}}></div>
+                                <ColorPickers field={"button_text_color_nomal"} changeColorPickerValue={(field,value) => changeColorPickerValue(field,value)} active={displayColorPicker.button_text_color_nomal}></ColorPickers>
                             </div>
                             <div className="width-30 relative">
-                                <TextField label="Hover" value={"fasd"} onChange={handleChange}></TextField>
-                                <div className="open_picker"></div>
-                                <div className="color_picker" style={{ display: 'none' }}>
-                                    <ColorPicker onChange={handleChangeColor} color={color} />
-                                </div>
+                                <TextField label="Hover"  value={colorPickerValue.one_color.hex} onChange={(value) =>inputColorPickerValue("button_text_color_hover",value)}></TextField>
+                                <div className="open_picker" onClick={() => openColorPicker("button_text_color_hover")} style={{backgroundColor: colorPickerValue.button_text_color_hover.hex}}></div>
+                                <ColorPickers field={"button_text_color_hover"} changeColorPickerValue={(field,value) => changeColorPickerValue(field,value)} active={displayColorPicker.button_text_color_hover}></ColorPickers>
                             </div>
                             <div className="width-30 relative">
-                                <TextField label="Selected" value={"fasd"} onChange={handleChange}></TextField>
-                                <div className="open_picker"></div>
-                                <div className="color_picker" style={{ display: 'none' }}>
-                                    <ColorPicker onChange={handleChangeColor} color={color} />
-                                </div>
+                                <TextField label="Selected"  value={colorPickerValue.one_color.hex} onChange={(value) =>inputColorPickerValue("button_text_color_selected",value)}></TextField>
+                                <div className="open_picker" onClick={() => openColorPicker("button_text_color_selected")} style={{backgroundColor: colorPickerValue.button_text_color_selected.hex}}></div>
+                                <ColorPickers field={"button_text_color_selected"} changeColorPickerValue={(field,value) => changeColorPickerValue(field,value)} active={displayColorPicker.button_text_color_selected}></ColorPickers>
                             </div>
                         </div>
                     </div>
@@ -435,25 +487,19 @@ export default function Dashboard(props) {
                         </div>
                         <div className="width-70 flex space-between">
                             <div className="width-30 relative">
-                                <TextField label="Nomal" value={"fasd"} onChange={handleChange}></TextField>
-                                <div className="open_picker"></div>
-                                <div className="color_picker" style={{ display: 'none' }}>
-                                    <ColorPicker onChange={handleChangeColor} color={color} />
-                                </div>
+                                <TextField label="Nomal"  value={colorPickerValue.one_color.hex} onChange={(value) =>inputColorPickerValue("button_background_color_nomal",value)}></TextField>
+                                <div className="open_picker" onClick={() => openColorPicker("button_background_color_nomal")} style={{backgroundColor: colorPickerValue.button_background_color_nomal.hex}}></div>
+                                <ColorPickers field={"button_background_color_nomal"} changeColorPickerValue={(field,value) => changeColorPickerValue(field,value)} active={displayColorPicker.button_background_color_nomal}></ColorPickers>
                             </div>
                             <div className="width-30 relative">
-                                <TextField label="Hover" value={"fasd"} onChange={handleChange}></TextField>
-                                <div className="open_picker"></div>
-                                <div className="color_picker" style={{ display: 'none' }}>
-                                    <ColorPicker onChange={handleChangeColor} color={color} />
-                                </div>
+                                <TextField label="Hover"  value={colorPickerValue.one_color.hex} onChange={(value) =>inputColorPickerValue("button_background_color_hover",value)}></TextField>
+                                <div className="open_picker" onClick={() => openColorPicker("button_background_color_hover")} style={{backgroundColor: colorPickerValue.button_background_color_hover.hex}}></div>
+                                <ColorPickers field={"button_background_color_hover"} changeColorPickerValue={(field,value) => changeColorPickerValue(field,value)} active={displayColorPicker.button_background_color_hover}></ColorPickers>
                             </div>
                             <div className="width-30 relative">
-                                <TextField label="Selected" value={"fasd"} onChange={handleChange}></TextField>
-                                <div className="open_picker"></div>
-                                <div className="color_picker" style={{ display: 'none' }}>
-                                    <ColorPicker onChange={handleChangeColor} color={color} />
-                                </div>
+                                <TextField label="Selected"  value={colorPickerValue.one_color.hex} onChange={(value) =>inputColorPickerValue("button_background_color_seleted",value)}></TextField>
+                                <div className="open_picker" onClick={() => openColorPicker("button_background_color_seleted")} style={{backgroundColor: colorPickerValue.button_background_color_seleted.hex}}></div>
+                                <ColorPickers field={"button_background_color_seleted"} changeColorPickerValue={(field,value) => changeColorPickerValue(field,value)} active={displayColorPicker.button_background_color_selected}></ColorPickers>
                             </div>
                         </div>
                     </div>
@@ -513,8 +559,9 @@ export default function Dashboard(props) {
                                     <div className="value-option">
                                         <h3 className="value-name mb-10">Red <a className="affects_product">(affects only 1 product)</a></h3>
                                         <div className="custom-value-option">
-                                            <div className="value-preview mr-50">
-
+                                            <div className="value-preview mr-50 relative">
+                                                <span className="top_color" style={{backgroundColor: colorPickerValue.one_color.hex}}></span>
+                                                <span className="bottom_color" style={{borderRightColor: colorPickerValue.one_color.hex,borderBottomColor: colorPickerValue.one_color.hex}}></span>
                                             </div>
                                             <div className="select-type-swatch mr-50">
                                                 <Select
@@ -531,7 +578,8 @@ export default function Dashboard(props) {
                         </Card.Section>
                     </Card>
                     <div className="modal_footer flex space-between mt-20">
-                        <div><Button primary>Save theme</Button></div>
+                        <div style={{display: importOldSwatch == true ? 'none' : ''}}><Button primary onClick={() => setImportOldSwatch(true)}>Import your old swatch images</Button></div>
+                        <GetImportOldSwatch></GetImportOldSwatch>
                         <div><Button primary>Save theme</Button></div>
                     </div>
                 </Modal.Section>
