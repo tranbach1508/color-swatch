@@ -81,6 +81,7 @@
 .custom-value-option .open_picker,.border_color .open_picker{
     top: 3px;
     right: 3px;
+    position: absolute;
 }
 .open_picker{
     height: 30px;
@@ -109,9 +110,9 @@
     border-radius: 3px;
 }
 .color_picker{
-    position: fixed;
+    position: absolute;
     z-index: 999;
-    left: 0;
+    top: 60px;
 }
 #customPage .color_picker{
     position: absolute;

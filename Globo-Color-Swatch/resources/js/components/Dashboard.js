@@ -3,6 +3,7 @@ import { useCallback, useRef, useState } from 'react';
 import { Page, Layout, Card, Icon, TextStyle, SettingToggle, Select } from '@shopify/polaris';
 import { ToolsMajorMonotone, DragHandleMinor } from '@shopify/polaris-icons';
 import { SortableContainer, SortableElement, sortableHandle } from 'react-sortable-hoc';
+import { Switch } from 'antd';
 import arrayMove from 'array-move';
 import ModalOptionDetail from './ModalOptionDetail';
 
@@ -23,14 +24,32 @@ export default function Dashboard() {
         },
     ]);
     const [active, setActive] = useState(false);
-    const [activeModal, setActiveModal] = useState(false);
+    const [activeModal, setActiveModal] = useState({
+        field: '',
+        display_style: ''
+    });
+    const [enableCollection, setEnableCollection] = useState(false);
 
     const onSortEnd = ({ oldIndex, newIndex }) => {
         setItem(arrayMove(items, oldIndex, newIndex))
     };
 
-    const handleActiveModal = useCallback(() => {
-        setActiveModal(!activeModal);
+    const handleEnableCollection = () => {
+        setEnableCollection(!enableCollection);
+    }
+
+    const handleActiveModal = useCallback((field) => {
+        setActiveModal({
+            field :field,
+            display_style: selectedDisplayStyle[field]
+        });
+    });
+
+    const closeModal = useCallback(() => {
+        setActiveModal({
+            field :"",
+            display_style: ""
+        });
     });
 
     const handleEnableApp = useCallback(() => {
@@ -43,7 +62,7 @@ export default function Dashboard() {
         weight: 1
     });
 
-    const handleSelectChange = (value,option) =>{
+    const handleSelectChange = (value, option) => {
         setSelectedDisplayStyle({
             ...selectedDisplayStyle,
             [option]: value
@@ -56,18 +75,6 @@ export default function Dashboard() {
         { label: 'Button', value: '3' },
         { label: 'Dropdown list', value: '4' },
     ];
-    // const options_size = [
-    //     { label: 'Color or custom image swatch', value: '1' },
-    //     { label: 'Automated variant image swatch', value: '2' },
-    //     { label: 'Button', value: '3' },
-    //     { label: 'Dropdown list', value: '4' },
-    // ];
-    // const options_weight = [
-    //     { label: 'Color or custom image swatch', value: '1' },
-    //     { label: 'Automated variant image swatch', value: '2' },
-    //     { label: 'Button', value: '3' },
-    //     { label: 'Dropdown list', value: '4' },
-    // ];
 
     const DragHandle = sortableHandle(() => <Icon source={DragHandleMinor} />);
 
@@ -79,13 +86,17 @@ export default function Dashboard() {
                 <td className="Polaris-DataTable__Cell">
                     <Select
                         options={options}
-                        onChange={(value) => handleSelectChange(value,option.value.value)}
+                        onChange={(value) => handleSelectChange(value, option.value.value)}
                         value={selectedDisplayStyle[option.value.value]}
                     />
+
+                </td>
+                <td className="Polaris-DataTable__Cell">
+                    <Switch checked={enableCollection} onChange={handleEnableCollection} />
                 </td>
                 <td className="Polaris-DataTable__Cell">
                     <div className="Polaris-ButtonGroup__Item">
-                        <a onClick={handleActiveModal} data-fancybox data-type="iframe" className="Polaris-Button resource-modal" >
+                        <a onClick={() =>handleActiveModal(option.value.value)} data-fancybox data-type="iframe" className="Polaris-Button resource-modal" >
                             <Icon
                                 source={ToolsMajorMonotone} />
                         </a>
@@ -137,6 +148,7 @@ export default function Dashboard() {
                                             <th></th>
                                             <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--firstColumn Polaris-DataTable__Cell--header" scope="col"><strong>Option</strong></th>
                                             <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--header" scope="col"><strong>Display style</strong></th>
+                                            <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--header" scope="col"><strong>Show in collection</strong></th>
                                             <th data-polaris-header-cell="true" className="Polaris-DataTable__Cell Polaris-DataTable__Cell--header" scope="col"><strong>Config</strong></th>
                                         </tr>
                                     </thead>
@@ -146,11 +158,14 @@ export default function Dashboard() {
                         </Layout.Section>
                     </Layout>
                 </div>
-
                 <ModalOptionDetail
-                    active={activeModal}
+                    active={activeModal.field != "" ? true : false}
+                    field={activeModal.field}
+                    displayStyle={activeModal.display_style}
                     handleActiveModal={handleActiveModal}
+                    closeModal={closeModal}
                 ></ModalOptionDetail>
+                
             </Page>
         </div>
     );

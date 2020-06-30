@@ -78,6 +78,7 @@ export default function CustomProductPage() {
     }))
 
     const openColorPicker = useCallback((field) => {
+        console.log("open");
         setDisplayColorPicker({
             ...displayColorPicker,
             [field]: !displayColorPicker[field]
@@ -85,6 +86,7 @@ export default function CustomProductPage() {
     })
 
     const closeColorPicker = useCallback((field) => {
+        console.log("close");
         setDisplayColorPicker({
             ...displayColorPicker,
             [field]: !displayColorPicker[field]
@@ -343,17 +345,17 @@ export default function CustomProductPage() {
                                 <div className="width-30">
                                     <label>Nomal</label>
                                     <div className="open_picker mt-5" onClick={() => openColorPicker("swatch_border_color_nomal")} style={{ backgroundColor: colorPickerValue.swatch_border_color_nomal.hex }}></div>
-                                    {displayColorPicker.swatch_border_color_nomal ? <ColorPickers closeColorPicker={() => closeColorPicker("swatch_border_color_nomal")} field={"swatch_border_color_nomal"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.swatch_border_color_nomal}></ColorPickers> : ''}
+                                    {displayColorPicker.swatch_border_color_nomal ? <ColorPickers closeColorPicker={() => closeColorPicker("swatch_border_color_nomal")} field={"swatch_border_color_nomal"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.swatch_border_color_nomal} value={colorPickerValue.swatch_border_color_nomal.hex}></ColorPickers> : ''}
                                 </div>
                                 <div className="width-30">
                                     <label>Hover</label>
                                     <div className="open_picker mt-5" onClick={() => openColorPicker("swatch_border_color_hover")} style={{ backgroundColor: colorPickerValue.swatch_border_color_hover.hex }}></div>
-                                    {displayColorPicker.swatch_border_color_hover ? <ColorPickers closeColorPicker={() => closeColorPicker("swatch_border_color_hover")} field={"swatch_border_color_hover"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.swatch_border_color_hover}></ColorPickers> : ''}
+                                    {displayColorPicker.swatch_border_color_hover ? <ColorPickers closeColorPicker={() => closeColorPicker("swatch_border_color_hover")} field={"swatch_border_color_hover"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.swatch_border_color_hover} value={colorPickerValue.swatch_border_color_hover.hex}></ColorPickers> : ''}
                                 </div>
                                 <div className="width-30">
                                     <label>Selected</label>
                                     <div className="open_picker mt-5" onClick={() => openColorPicker("swatch_border_color_selected")} style={{ backgroundColor: colorPickerValue.swatch_border_color_selected.hex }}></div>
-                                    {displayColorPicker.swatch_border_color_selected ? <ColorPickers closeColorPicker={() => closeColorPicker("swatch_border_color_selected")} field={"swatch_border_color_selected"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.swatch_border_color_selected}></ColorPickers> : ''}
+                                    {displayColorPicker.swatch_border_color_selected ? <ColorPickers closeColorPicker={() => closeColorPicker("swatch_border_color_selected")} field={"swatch_border_color_selected"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.swatch_border_color_selected} value={colorPickerValue.swatch_border_color_selected.hex}></ColorPickers> : ''}
                                 </div>
                             </div>
                         </FormLayout>
@@ -512,17 +514,17 @@ export default function CustomProductPage() {
                                 <div className="width-30">
                                     <label>Nomal</label>
                                     <div className="open_picker mt-5" onClick={() => openColorPicker("button_border_color_nomal")} style={{ backgroundColor: colorPickerValue.button_border_color_nomal.hex }}></div>
-                                    {displayColorPicker.button_border_color_nomal ? <ColorPickers closeColorPicker={() => closeColorPicker("button_border_color_nomal")} field={"button_border_color_nomal"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.button_border_color_nomal}></ColorPickers> : ''}
+                                    {displayColorPicker.button_border_color_nomal ? <ColorPickers closeColorPicker={() => closeColorPicker("button_border_color_nomal")} field={"button_border_color_nomal"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.button_border_color_nomal} value={colorPickerValue.button_border_color_nomal.hex}></ColorPickers> : ''}
                                 </div>
                                 <div className="width-30">
                                     <label>Hover</label>
                                     <div className="open_picker mt-5" onClick={() => openColorPicker("button_border_color_hover")} style={{ backgroundColor: colorPickerValue.button_border_color_hover.hex }}></div>
-                                    {displayColorPicker.button_border_color_hover ? <ColorPickers closeColorPicker={() => closeColorPicker("button_border_color_hover")} field={"button_border_color_hover"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.button_border_color_hover}></ColorPickers> : ''}
+                                    {displayColorPicker.button_border_color_hover ? <ColorPickers closeColorPicker={() => closeColorPicker("button_border_color_hover")} field={"button_border_color_hover"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.button_border_color_hover} value={colorPickerValue.button_border_color_hover.hex}></ColorPickers> : ''}
                                 </div>
                                 <div className="width-30">
                                     <label>Selected</label>
                                     <div className="open_picker mt-5" onClick={() => openColorPicker("button_border_color_selected")} style={{ backgroundColor: colorPickerValue.button_border_color_selected.hex }}></div>
-                                    {displayColorPicker.button_border_color_selected ? <ColorPickers closeColorPicker={() => closeColorPicker("button_border_color_selected")} field={"button_border_color_selected"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.button_border_color_selected}></ColorPickers> : ''}
+                                    {displayColorPicker.button_border_color_selected ? <ColorPickers closeColorPicker={() => closeColorPicker("button_border_color_selected")} field={"button_border_color_selected"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.button_border_color_selected} value={colorPickerValue.button_border_color_selected.hex}></ColorPickers> : ''}
                                 </div>
                             </div>
                         </FormLayout>
@@ -568,17 +570,17 @@ export default function CustomProductPage() {
                                 <div className="width-30">
                                     <label>Nomal</label>
                                     <div className="open_picker mt-5" onClick={() => openColorPicker("text_color_nomal")} style={{ backgroundColor: colorPickerValue.text_color_nomal.hex }}></div>
-                                    {displayColorPicker.text_color_nomal ? <ColorPickers closeColorPicker={() => closeColorPicker("text_color_nomal")} field={"text_color_nomal"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.text_color_nomal}></ColorPickers> : ''}
+                                    {displayColorPicker.text_color_nomal ? <ColorPickers closeColorPicker={() => closeColorPicker("text_color_nomal")} field={"text_color_nomal"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.text_color_nomal} value={colorPickerValue.text_color_nomal.hex}></ColorPickers> : ''}
                                 </div>
                                 <div className="width-30">
                                     <label>Hover</label>
                                     <div className="open_picker mt-5" onClick={() => openColorPicker("text_color_hover")} style={{ backgroundColor: colorPickerValue.text_color_hover.hex }}></div>
-                                    {displayColorPicker.text_color_hover ? <ColorPickers closeColorPicker={() => closeColorPicker("text_color_hover")} field={"text_color_hover"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.text_color_hover}></ColorPickers> : ''}
+                                    {displayColorPicker.text_color_hover ? <ColorPickers closeColorPicker={() => closeColorPicker("text_color_hover")} field={"text_color_hover"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.text_color_hover} value={colorPickerValue.text_color_hover.hex}></ColorPickers> : ''}
                                 </div>
                                 <div className="width-30">
                                     <label>Selected</label>
                                     <div className="open_picker mt-5" onClick={() => openColorPicker("text_color_selected")} style={{ backgroundColor: colorPickerValue.text_color_selected.hex }}></div>
-                                    {displayColorPicker.text_color_selected ? <ColorPickers closeColorPicker={() => closeColorPicker("text_color_selected")} field={"text_color_selected"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.text_color_selected}></ColorPickers> : ''}
+                                    {displayColorPicker.text_color_selected ? <ColorPickers closeColorPicker={() => closeColorPicker("text_color_selected")} field={"text_color_selected"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.text_color_selected} value={colorPickerValue.text_color_selected.hex}></ColorPickers> : ''}
                                 </div>
                             </div>
                         </FormLayout>
@@ -590,17 +592,17 @@ export default function CustomProductPage() {
                                 <div className="width-30">
                                     <label>Nomal</label>
                                     <div className="open_picker" onClick={() => openColorPicker("background_color_nomal")} style={{ backgroundColor: colorPickerValue.background_color_nomal.hex }}></div>
-                                    {displayColorPicker.background_color_nomal ? <ColorPickers closeColorPicker={() => closeColorPicker("background_color_nomal")} field={"background_color_nomal"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.background_color_nomal}></ColorPickers> : ''}
+                                    {displayColorPicker.background_color_nomal ? <ColorPickers closeColorPicker={() => closeColorPicker("background_color_nomal")} field={"background_color_nomal"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.background_color_nomal} value={colorPickerValue.background_color_nomal.hex}></ColorPickers> : ''}
                                 </div>
                                 <div className="width-30">
                                     <label>Nomal</label>
                                     <div className="open_picker" onClick={() => openColorPicker("background_color_hover")} style={{ backgroundColor: colorPickerValue.background_color_hover.hex }}></div>
-                                    {displayColorPicker.background_color_hover ? <ColorPickers closeColorPicker={() => closeColorPicker("background_color_hover")} field={"background_color_hover"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.background_color_hover}></ColorPickers> : ''}
+                                    {displayColorPicker.background_color_hover ? <ColorPickers closeColorPicker={() => closeColorPicker("background_color_hover")} field={"background_color_hover"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.background_color_hover} value={colorPickerValue.background_color_hover.hex}></ColorPickers> : ''}
                                 </div>
                                 <div className="width-30">
                                     <label>Nomal</label>
                                     <div className="open_picker" onClick={() => openColorPicker("background_color_selected")} style={{ backgroundColor: colorPickerValue.background_color_selected.hex }}></div>
-                                    {displayColorPicker.background_color_selected ? <ColorPickers closeColorPicker={() => closeColorPicker("background_color_selected")} field={"background_color_selected"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.background_color_selected}></ColorPickers> : ''}
+                                    {displayColorPicker.background_color_selected ? <ColorPickers closeColorPicker={() => closeColorPicker("background_color_selected")} field={"background_color_selected"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.background_color_selected} value={colorPickerValue.background_color_selected.hex}></ColorPickers> : ''}
                                 </div>
                             </div>
                         </FormLayout>
