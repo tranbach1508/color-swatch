@@ -37,6 +37,10 @@
     display: flex;
     justify-content: space-between;
 }
+.flex-end{
+    display: flex;
+    justify-content: flex-end;
+}
 .list_value_option li .custom-value-option{
     display: flex;
 }
@@ -60,8 +64,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    border-bottom: 35px solid;
-    border-right: 35px solid;
+    border-bottom: 35px solid #fff;
+    border-left: 35px solid transparent;
 }
 
 .custom-value-option .value-file,
@@ -276,28 +280,28 @@ li{
     height: 110px;
 }
 .collection_page .small.double{
+    width: 28px;
+    height: 28px;
+}
+.collection_page .medium.double{
+    width: 33px;
+    height: 33px;
+}
+.collection_page .large.double{
     width: 38px;
     height: 38px;
 }
-.collection_page .medium.double{
-    width: 48px;
-    height: 48px;
-}
-.collection_page .large.double{
-    width: 58px;
-    height: 58px;
-}
 .collection_page .small{
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
 }
 .collection_page .medium{
-    width: 40px;
-    height: 40px;
+    width: 25px;
+    height: 25px;
 }
 .collection_page .large{
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
 }
 div.double{
     padding: 3px;
@@ -371,18 +375,18 @@ div.double{
     box-sizing: content-box;
 }
 .collection_page .button_medium{
-    height: 22px;
-    padding: 0 12px;
-    font-size: 12px;
-    line-height: 22px;
+    height: 21px;
+    padding: 0 11px;
+    font-size: 11px;
+    line-height: 21px;
     border: 1px solid;
     box-sizing: content-box;
 }
 .collection_page .button_large{
-    height: 24px;
-    padding: 0 14px;
-    font-size: 14px;
-    line-height: 24px;
+    height: 22px;
+    padding: 0 12px;
+    font-size: 12px;
+    line-height: 22px;
     border: 1px solid;
     box-sizing: content-box;
 }
@@ -403,4 +407,8 @@ button:focus{
 .collection_page .product_price{
     font-size: 13px;
     font-weight: 500;
+}
+.settingPage .Polaris-Select__Content,.settingPage .Polaris-Select{
+    min-width: 200px;
+    max-width: 200px;
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { useCallback, useRef, useState } from 'react';
-import { Page, Layout, Card, Icon, TextStyle, SettingToggle, Select } from '@shopify/polaris';
+import { Page, Layout, Card, Icon, Button, Select } from '@shopify/polaris';
 import { ToolsMajorMonotone, DragHandleMinor } from '@shopify/polaris-icons';
 import { SortableContainer, SortableElement, sortableHandle } from 'react-sortable-hoc';
 import { Switch } from 'antd';
@@ -8,7 +8,7 @@ import arrayMove from 'array-move';
 import ModalOptionDetail from './ModalOptionDetail';
 
 export default function Dashboard() {
-
+    const [change,setChange] = useState(false);
     const [items, setItem] = useState([
         {
             name: 'Color',
@@ -23,19 +23,27 @@ export default function Dashboard() {
             value: 'weight'
         },
     ]);
-    const [active, setActive] = useState(false);
     const [activeModal, setActiveModal] = useState({
         field: '',
         display_style: ''
     });
-    const [enableCollection, setEnableCollection] = useState(false);
+    const [enableCollection, setEnableCollection] = useState({
+        color: false,
+        size: false,
+        weight: false,
+    });
 
     const onSortEnd = ({ oldIndex, newIndex }) => {
-        setItem(arrayMove(items, oldIndex, newIndex))
+        setItem(arrayMove(items, oldIndex, newIndex));
+        setChange(true);
     };
 
-    const handleEnableCollection = () => {
-        setEnableCollection(!enableCollection);
+    const handleEnableCollection = (field) => {
+        setEnableCollection({
+            ...enableCollection,
+            [field]: !enableCollection[field]
+        });
+        setChange(true);
     }
 
     const handleActiveModal = useCallback((field) => {
@@ -52,10 +60,6 @@ export default function Dashboard() {
         });
     });
 
-    const handleEnableApp = useCallback(() => {
-        setActive(!active);
-    });
-
     const [selectedDisplayStyle, setSelectedDisplayStyle] = useState({
         color: 1,
         size: 1,
@@ -66,7 +70,8 @@ export default function Dashboard() {
         setSelectedDisplayStyle({
             ...selectedDisplayStyle,
             [option]: value
-        })
+        });
+        setChange(true);
     };
 
     const options = [
@@ -92,7 +97,7 @@ export default function Dashboard() {
 
                 </td>
                 <td className="Polaris-DataTable__Cell">
-                    <Switch checked={enableCollection} onChange={handleEnableCollection} />
+                    <Switch checked={enableCollection[option.value.name]} onChange={() => handleEnableCollection(option.value.name)} />
                 </td>
                 <td className="Polaris-DataTable__Cell">
                     <div className="Polaris-ButtonGroup__Item">
@@ -117,28 +122,12 @@ export default function Dashboard() {
         );
     });
 
-    const contentStatus = active ? 'Disable' : 'Enable';
-
-    const textStatus = active ? 'enabled' : 'disabled';
+    
 
     return (
         <div id="dashboardPage">
             <Page title="Dashboard">
-                <Layout>
-                    <Layout.Section>
-                        <SettingToggle
-                            action={{
-                                content: contentStatus,
-                                onAction: handleEnableApp,
-                            }}
-                            enabled={active}
-                        >
-                            This setting is <TextStyle variation="strong">{textStatus}</TextStyle>.
-                                 </SettingToggle>
-                    </Layout.Section>
-                </Layout>
-
-                <div className="mt-20">
+                <div>
                     <Layout>
                         <Layout.Section>
                             <Card title="Product options" sectioned>
@@ -158,6 +147,7 @@ export default function Dashboard() {
                         </Layout.Section>
                     </Layout>
                 </div>
+                <div className="flex-end mt-10"><Button primary disabled={change ? '' : 'disabled'} >Save</Button></div>
                 <ModalOptionDetail
                     active={activeModal.field != "" ? true : false}
                     field={activeModal.field}
@@ -165,7 +155,6 @@ export default function Dashboard() {
                     handleActiveModal={handleActiveModal}
                     closeModal={closeModal}
                 ></ModalOptionDetail>
-                
             </Page>
         </div>
     );

@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { useCallback, useRef, useState } from 'react';
-import { Icon, ActionList, AppProvider, Avatar, Card, ContextualSaveBar, FormLayout, Frame, Layout, Loading, Modal, Navigation, Page, SkeletonBodyText, SkeletonDisplayText, SkeletonPage, TextContainer, TextField, Toast, TopBar } from '@shopify/polaris';
-import { ArrowLeftMinor, ConversationMinor, HomeMajorMonotone, InstallMinor,ColorsMajorMonotone } from '@shopify/polaris-icons';
+import { Icon, ActionList, AppProvider, Card, ContextualSaveBar, FormLayout, Frame, Layout, Loading, Modal, Navigation, Page, SkeletonBodyText, SkeletonDisplayText, SkeletonPage, TextContainer, TextField, Toast, TopBar } from '@shopify/polaris';
+import { ArrowLeftMinor, ConversationMinor, HomeMajorMonotone, InstallMinor,ColorsMajorMonotone,SettingsMajorMonotone } from '@shopify/polaris-icons';
 import Routers from './Routers';
 import {
   Link
@@ -195,6 +195,14 @@ export default function App() {
               <Icon
   source={ColorsMajorMonotone} />
               </div><span className="Polaris-Navigation__Text">Custom watch</span>
+            </Link></div>
+          </li>
+          <li className="Polaris-Navigation__ListItem">
+            <div className="Polaris-Navigation__ItemWrapper"><Link className="Polaris-Navigation__Item" tabIndex={0} to={'settings'} data-polaris-unstyled="true">
+              <div className="Polaris-Navigation__Icon">
+              <Icon
+  source={SettingsMajorMonotone} />
+              </div><span className="Polaris-Navigation__Text">Settings</span>
             </Link></div>
           </li>
         </ul>

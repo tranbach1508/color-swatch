@@ -7,14 +7,22 @@ export default function ColorPickers(props) {
   const [active, setActive] = useState(false);
   const [field, setField] = useState("");
   const [value, setValue] = useState("#000");
+  const [position, setPosition] = useState({
+    top: 0,
+    left: 0
+  });
 
   useEffect(
     () => {
       setActive(props.active);
         setField(props.field);
-        setValue(props.value)
+        setValue(props.value);
+        setPosition({
+          top: props.position.top,
+          left: props.position.left,
+        })
     },
-    [props.value,props.active], // giá trị được subcrive
+    [props.value,props.active,props.position], // giá trị được subcrive
   );
 
   const handleChangeColor = (color) => {
@@ -41,13 +49,11 @@ export default function ColorPickers(props) {
   const ref = useRef();
 
   useOutsideClick(ref, () => {
-    setActive(false);
     props.closeColorPicker();
-    setField("");
   });
 
   return (
-    <div className="color_picker" style={{ display: active ? 'block' : 'none' }} ref={ref}>
+    <div className="color_picker" style={{ display: active ? 'block' : 'none',top: (position.top + 35), left: position.left }} ref={ref}>
       <SketchPicker onChangeComplete={(color) =>handleChangeColor(color)} color={value} />
     </div>
   );

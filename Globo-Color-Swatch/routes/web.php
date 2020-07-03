@@ -12,16 +12,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::any('authorize', 'AuthController@index');
+Route::prefix('admin')->group(function () {
+    Route::any('/{path?}', 'AdminController@index');
+});
 
-Route::get('/', function () {
-    return view('settings');
-});
-Route::get('/integrate', function () {
-    return view('settings');
-});
-Route::get('/custom', function () {
-    return view('settings');
-});
 // Route::prefix('api')->group(function () {
 //     Route::get('rules',    'GetApiController@getCondition');
 //     Route::get('getform',    'GetApiController@getForm');

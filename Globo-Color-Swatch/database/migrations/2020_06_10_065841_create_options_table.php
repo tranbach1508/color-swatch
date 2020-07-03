@@ -17,8 +17,8 @@ class CreateOptionsTable extends Migration
             $table->increments('id');
             $table->integer('shop_id');
             $table->string('name');
-            $table->integer('display_style');
-            $table->text('settings');
+            $table->integer('display_style')->nullable();
+            $table->text('settings')->nullable();
             $table->timestamps();
         });
     }

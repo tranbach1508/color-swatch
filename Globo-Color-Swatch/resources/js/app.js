@@ -26,7 +26,7 @@ import {
 
 ReactDOM.render(
     <AppProvider>
-        <BrowserRouter  basename="Globo-Color-Swatch/public/">
+        <BrowserRouter  basename="Globo-Color-Swatch/public/admin">
         <App></App>
         </BrowserRouter>
     </AppProvider>, document.getElementById("app")

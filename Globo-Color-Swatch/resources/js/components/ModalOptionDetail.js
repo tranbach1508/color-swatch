@@ -8,6 +8,7 @@ import ColorPickers from './ColorPickers';
 export default function Dashboard(props) {
 
     const [active, setActive] = useState(false);
+    const [change, setChange] = useState(false);
     const [customize, setCustomize] = useState(false);
     const [swatchShape, setSwatchShape] = useState("crcle");
     const [buttonShape, setButtonShape] = useState("crcle");
@@ -30,6 +31,10 @@ export default function Dashboard(props) {
     })
 
     const [displayColorPicker, setDisplayColorPicker] = useState("");
+    const [positionColorPicker, setPositionColorPicker] = useState({
+        top: 0,
+        left: 0
+    });
 
     const [colorPickerValue, setColorPickerValue] = useState({
         one_color: {
@@ -78,6 +83,23 @@ export default function Dashboard(props) {
 
     const [importOldSwatch, setImportOldSwatch] = useState(false);
     const [importOldSwatchTheme, setImportOldSwatchTheme] = useState('1');
+    const refs = {
+        swatch_border_color_nomal: useRef(),
+        swatch_border_color_hover: useRef(),
+        swatch_border_color_selected: useRef(),
+        button_border_color_nomal: useRef(),
+        button_border_color_hover: useRef(),
+        button_border_color_selected: useRef(),
+        button_text_color_nomal: useRef(),
+        button_text_color_hover: useRef(),
+        button_text_color_selected: useRef(),
+        button_background_color_nomal: useRef(),
+        button_background_color_hover: useRef(),
+        button_background_color_seleted: useRef(),
+        one_color: useRef(),
+        two_color: useRef(),
+    }
+
 
     useEffect(
         () => {
@@ -90,45 +112,42 @@ export default function Dashboard(props) {
     );
 
     const openColorPicker = useCallback((field) => {
+        if (refs[field]) {
+            setPositionColorPicker({
+                top: refs[field].current.getBoundingClientRect().top,
+                left: refs[field].current.getBoundingClientRect().left,
+            })
+        }
         setDisplayColorPicker(field);
     })
-    const closeColorPicker = (field) => {
-        setDisplayColorPicker({
-            one_color: false,
-            two_color: false,
-            swatch_border_color_nomal: false,
-            swatch_border_color_hover: false,
-            swatch_border_color_selected: false,
-            button_border_color_nomal: false,
-            button_border_color_hover: false,
-            button_border_color_selected: false,
-            button_text_color_nomal: false,
-            button_text_color_hover: false,
-            button_text_color_selected: false,
-            button_background_color_nomal: false,
-            button_background_color_hover: false,
-            button_background_color_selected: false,
-            two_color: false,
-            two_color: false,
+    const closeColorPicker = () => {
+        setDisplayColorPicker("");
+        setPositionColorPicker({
+            top: 0,
+            left: 0
         })
     }
     const handleChange = useCallback(() => {
+        setDisplayColorPicker("");
         setActive(false);
         props.closeModal();
         setVariantOption({
             field: "",
             display_style: ""
-        })
+        });
+        setChange(true);
     });
     const handleSelectChange = useCallback((value) => {
-        setSeletedTypeSwatch(value)
+        setSeletedTypeSwatch(value);
+        setChange(true);
     }, []);
 
     const inputColorPickerValue = (field, newValue) => {
         setColorPickerValue({
             ...colorPickerValue,
             [field]: { hex: newValue }
-        })
+        });
+        setChange(true);
     }
 
     const changeColorPickerValue = (field, value) => {
@@ -136,44 +155,53 @@ export default function Dashboard(props) {
         setColorPickerValue({
             ...colorPickerValue,
             [field]: value
-        })
+        });
+        setChange(true);
     }
 
-    const handleChangeCustomize = useCallback(() => setCustomize((customize) => !customize), []);
+    const handleChangeCustomize = useCallback(() => {
+        setCustomize(!customize);
+        setChange(true);
+    }
+    );
     const changeSelected = (state, value, field) => {
         if (state == "swatch_hover_effect") {
             setSwatchHoverEffect({
                 ...swatchHoverEffect,
                 [field]: value
-            })
+            });
+            setChange(true);
         } else if (state == "button_hover_effect") {
             setButtonHoverEffect({
                 ...buttonHoverEffect,
                 [field]: value
-            })
+            });
+            setChange(true);
         } else if (state == "border_style") {
             setBoderStyle(value);
+            setChange(true);
         } else if (state == "display_type") {
             setDisplayType(value);
+            setChange(true);
         } else if (state == "swatch_shape") {
             setSwatchShape(value);
+            setChange(true);
         } else if (state == "swatch_size") {
             setSwatchSize(value);
+            setChange(true);
         } else if (state == "button_shape") {
             setButtonShape(value);
+            setChange(true);
         } else if (state == "button_size") {
             setButtonSize(value);
+            setChange(true);
         } else if (state == "text_style") {
             setTextStyle(value);
+            setChange(true);
         }
 
     }
 
-    const typeList = [
-        { label: '--- Choose a type ---', value: 'choose' },
-        { label: 'Swatch', value: 'swatch' },
-        { label: 'Button', value: 'button' },
-    ];
     const swatch_shape = [
         { label: 'Crcle', value: 'crcle' },
         { label: 'Square', value: 'square' },
@@ -223,30 +251,6 @@ export default function Dashboard(props) {
         { label: 'Test', value: '5' },
     ];
 
-    // const GetCustomize = () => {
-    //     if (customize == true) {
-    //         return (
-    //             <div className="type flex mb-10">
-    //                 <div className="width-30">
-    //                     <span>Display type</span>
-    //                 </div>
-    //                 <div className="width-70">
-    //                     <Select
-    //                         options={typeList}
-    //                         onChange={(value) => changeSelected("display_type", value, "none")}
-    //                         value={displayType}
-    //                     />
-    //                 </div>
-    //             </div>
-    //         )
-    //     } else {
-    //         return (
-    //             <div></div>
-    //         )
-    //     }
-
-    // }
-
     const GetImportOldSwatch = () => {
         if (importOldSwatch) {
             return (
@@ -266,15 +270,12 @@ export default function Dashboard(props) {
         }
     }
 
-    const wrapperRef = useRef(null);
-
     const GetTypeSwatch = () => {
         if (seletedTypeSwatch == "1") {
             return (
                 <div className="one-color mr-50 relative">
                     <TextField value={colorPickerValue.one_color.hex} onChange={(value) => inputColorPickerValue("one_color", value)}></TextField>
-                    <div className="open_picker" onClick={() => openColorPicker("one_color")} style={{ backgroundColor: colorPickerValue.one_color.hex }}></div>
-                    {displayColorPicker == "one_color" ? <ColorPickers closeColorPicker={() => closeColorPicker("one_color")} field={"one_color"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.one_color} value={colorPickerValue.one_color.hex}></ColorPickers> : ''}
+                    <div ref={refs.one_color} className="open_picker" onClick={() => openColorPicker("one_color")} style={{ backgroundColor: colorPickerValue.one_color.hex }}></div>
                 </div>
             )
         } else if (seletedTypeSwatch == "2") {
@@ -282,13 +283,11 @@ export default function Dashboard(props) {
                 <div className="two-colors">
                     <div className="value-color-1 mr-15 width-50 flex relative">
                         <TextField value={colorPickerValue.one_color.hex} onChange={(value) => inputColorPickerValue("one_color", value)}></TextField>
-                        <div className="open_picker" onClick={() => openColorPicker("one_color")} style={{ backgroundColor: colorPickerValue.one_color.hex }}></div>
-                        {displayColorPicker == "one_color" ? <ColorPickers closeColorPicker={() => closeColorPicker("one_color")} field={"one_color"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.one_color} value={colorPickerValue.one_color.hex}></ColorPickers> : ''}
+                        <div ref={refs.one_color} className="open_picker" onClick={() => openColorPicker("one_color")} style={{ backgroundColor: colorPickerValue.one_color.hex }}></div>
                     </div>
                     <div className="value-color-2 mr-15 width-50 flex relative">
-                        <TextField value={colorPickerValue.one_color.hex} onChange={(value) => inputColorPickerValue("two_color", value)}></TextField>
-                        <div className="open_picker" onClick={() => openColorPicker("two_color")} style={{ backgroundColor: colorPickerValue.two_color.hex }}></div>
-                        {displayColorPicker == "two_color" ? <ColorPickers closeColorPicker={() => closeColorPicker("two_color")} field={"two_color"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.two_color} value={colorPickerValue.two_color.hex}></ColorPickers> : ''}
+                        <TextField value={colorPickerValue.two_color.hex} onChange={(value) => inputColorPickerValue("two_color", value)}></TextField>
+                        <div ref={refs.two_color} className="open_picker" onClick={() => openColorPicker("two_color")} style={{ backgroundColor: colorPickerValue.two_color.hex }}></div>
                     </div>
                 </div>
 
@@ -350,18 +349,15 @@ export default function Dashboard(props) {
                         <div className="width-70 flex space-between relative">
                             <div className="width-30">
                                 <label>Nomal</label>
-                                <div className="open_picker mt-5" onClick={() => openColorPicker("swatch_border_color_nomal")} style={{ backgroundColor: colorPickerValue.swatch_border_color_nomal.hex }}></div>
-                                {displayColorPicker == "swatch_border_color_nomal" ? <ColorPickers closeColorPicker={() => closeColorPicker("swatch_border_color_nomal")} field={"swatch_border_color_nomal"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.swatch_border_color_nomal} value={colorPickerValue.swatch_border_color_nomal.hex}></ColorPickers> : ''}
+                                <div ref={refs.swatch_border_color_nomal} className="open_picker mt-5" onClick={() => openColorPicker("swatch_border_color_nomal")} style={{ backgroundColor: colorPickerValue.swatch_border_color_nomal.hex }}></div>
                             </div>
                             <div className="width-30">
                                 <label>Hover</label>
-                                <div className="open_picker mt-5" onClick={() => openColorPicker("swatch_border_color_hover")} style={{ backgroundColor: colorPickerValue.swatch_border_color_hover.hex }}></div>
-                                {displayColorPicker == "swatch_border_color_hover" ? <ColorPickers closeColorPicker={() => closeColorPicker("swatch_border_color_hover")} field={"swatch_border_color_hover"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.swatch_border_color_hover} value={colorPickerValue.swatch_border_color_hover.hex}></ColorPickers> : ''}
+                                <div ref={refs.swatch_border_color_hover} className="open_picker mt-5" onClick={() => openColorPicker("swatch_border_color_hover")} style={{ backgroundColor: colorPickerValue.swatch_border_color_hover.hex }}></div>
                             </div>
                             <div className="width-30">
                                 <label>Selected</label>
-                                <div className="open_picker mt-5" onClick={() => openColorPicker("swatch_border_color_selected")} style={{ backgroundColor: colorPickerValue.swatch_border_color_selected.hex }}></div>
-                                {displayColorPicker == "swatch_border_color_selected" ? <ColorPickers closeColorPicker={() => closeColorPicker("swatch_border_color_selected")} field={"swatch_border_color_selected"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.swatch_border_color_selected} value={colorPickerValue.swatch_border_color_selected.hex}></ColorPickers> : ''}
+                                <div ref={refs.swatch_border_color_selected} className="open_picker mt-5" onClick={() => openColorPicker("swatch_border_color_selected")} style={{ backgroundColor: colorPickerValue.swatch_border_color_selected.hex }}></div>
                             </div>
                         </div>
                     </div>
@@ -444,18 +440,15 @@ export default function Dashboard(props) {
                         <div className="width-70 flex space-between relative">
                             <div className="width-30">
                                 <label>Nomal</label>
-                                <div className="open_picker mt-5" onClick={() => openColorPicker("button_border_color_nomal")} style={{ backgroundColor: colorPickerValue.button_border_color_nomal.hex }}></div>
-                                {displayColorPicker == "button_border_color_nomal" ? <ColorPickers closeColorPicker={() => closeColorPicker("button_border_color_nomal")} field={"button_border_color_nomal"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.button_border_color_nomal} value={colorPickerValue.button_border_color_nomal.hex}></ColorPickers> : ''}
+                                <div ref={refs.button_border_color_nomal} className="open_picker mt-5" onClick={() => openColorPicker("button_border_color_nomal")} style={{ backgroundColor: colorPickerValue.button_border_color_nomal.hex }}></div>
                             </div>
                             <div className="width-30">
                                 <label>Hover</label>
-                                <div className="open_picker mt-5" onClick={() => openColorPicker("button_border_color_hover")} style={{ backgroundColor: colorPickerValue.button_border_color_hover.hex }}></div>
-                                {displayColorPicker == "button_border_color_hover" ? <ColorPickers closeColorPicker={() => closeColorPicker("button_border_color_hover")} field={"button_border_color_hover"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.button_border_color_hover} value={colorPickerValue.button_border_color_hover.hex}></ColorPickers> : ''}
+                                <div ref={refs.button_border_color_hover} className="open_picker mt-5" onClick={() => openColorPicker("button_border_color_hover")} style={{ backgroundColor: colorPickerValue.button_border_color_hover.hex }}></div>
                             </div>
                             <div className="width-30">
                                 <label>Selected</label>
-                                <div className="open_picker mt-5" onClick={() => openColorPicker("button_border_color_selected")} style={{ backgroundColor: colorPickerValue.button_border_color_selected.hex }}></div>
-                                {displayColorPicker == "button_border_color_selected" ? <ColorPickers closeColorPicker={() => closeColorPicker("button_border_color_selected")} field={"button_border_color_selected"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.button_border_color_selected} value={colorPickerValue.button_border_color_selected.hex}></ColorPickers> : ''}
+                                <div ref={refs.button_border_color_selected} className="open_picker mt-5" onClick={() => openColorPicker("button_border_color_selected")} style={{ backgroundColor: colorPickerValue.button_border_color_selected.hex }}></div>
                             </div>
                         </div>
                     </div>
@@ -478,18 +471,15 @@ export default function Dashboard(props) {
                         <div className="width-70 flex space-between relative">
                             <div className="width-30">
                                 <label>Nomal</label>
-                                <div className="open_picker mt-5" onClick={() => openColorPicker("button_text_color_nomal")} style={{ backgroundColor: colorPickerValue.button_text_color_nomal.hex }}></div>
-                                {displayColorPicker == "button_text_color_nomal" ? <ColorPickers closeColorPicker={() => closeColorPicker("button_text_color_nomal")} field={"button_text_color_nomal"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.button_text_color_nomal} active={displayColorPicker.button_text_color_nomal} value={colorPickerValue.button_border_color_selected.hex}></ColorPickers> : ''}
+                                <div ref={refs.button_text_color_nomal} className="open_picker mt-5" onClick={() => openColorPicker("button_text_color_nomal")} style={{ backgroundColor: colorPickerValue.button_text_color_nomal.hex }}></div>
                             </div>
                             <div className="width-30">
                                 <label>Hover</label>
-                                <div className="open_picker mt-5" onClick={() => openColorPicker("button_text_color_hover")} style={{ backgroundColor: colorPickerValue.button_text_color_hover.hex }}></div>
-                                {displayColorPicker == "button_text_color_hover" ? <ColorPickers closeColorPicker={() => closeColorPicker("button_text_color_hover")} field={"button_text_color_hover"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.button_text_color_hover} active={displayColorPicker.button_text_color_hover} value={colorPickerValue.button_border_color_selected.hex}></ColorPickers> : ''}
+                                <div ref={refs.button_text_color_hover} className="open_picker mt-5" onClick={() => openColorPicker("button_text_color_hover")} style={{ backgroundColor: colorPickerValue.button_text_color_hover.hex }}></div>
                             </div>
                             <div className="width-30">
                                 <label>Selected</label>
-                                <div className="open_picker mt-5" onClick={() => openColorPicker("button_text_color_selected")} style={{ backgroundColor: colorPickerValue.button_text_color_selected.hex }}></div>
-                                {displayColorPicker == "button_text_color_selected" ? <ColorPickers closeColorPicker={() => closeColorPicker("button_text_color_selected")} field={"button_text_color_selected"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.button_text_color_selected} active={displayColorPicker.button_text_color_selected} value={colorPickerValue.button_border_color_selected.hex}></ColorPickers> : ''}
+                                <div ref={refs.button_text_color_selected} className="open_picker mt-5" onClick={() => openColorPicker("button_text_color_selected")} style={{ backgroundColor: colorPickerValue.button_text_color_selected.hex }}></div>
                             </div>
                         </div>
                     </div>
@@ -500,18 +490,15 @@ export default function Dashboard(props) {
                         <div className="width-70 flex space-between relative">
                             <div className="width-30">
                                 <label>Nomal</label>
-                                <div className="open_picker mt-5" onClick={() => openColorPicker("button_background_color_nomal")} style={{ backgroundColor: colorPickerValue.button_background_color_nomal.hex }}></div>
-                                {displayColorPicker == "button_background_color_nomal" ? <ColorPickers closeColorPicker={() => closeColorPicker("button_background_color_nomal")} field={"button_background_color_nomal"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.button_background_color_nomal} value={colorPickerValue.button_background_color_nomal.hex}></ColorPickers> : ''}
+                                <div ref={refs.button_background_color_nomal} className="open_picker mt-5" onClick={() => openColorPicker("button_background_color_nomal")} style={{ backgroundColor: colorPickerValue.button_background_color_nomal.hex }}></div>
                             </div>
                             <div className="width-30">
                                 <label>Hover</label>
-                                <div className="open_picker mt-5" onClick={() => openColorPicker("button_background_color_hover")} style={{ backgroundColor: colorPickerValue.button_background_color_hover.hex }}></div>
-                                {displayColorPicker == "button_background_color_hover" ? <ColorPickers closeColorPicker={() => closeColorPicker("button_background_color_hover")} field={"button_background_color_hover"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.button_background_color_hover} value={colorPickerValue.button_background_color_hover.hex}></ColorPickers> : ''}
+                                <div ref={refs.button_background_color_hover} className="open_picker mt-5" onClick={() => openColorPicker("button_background_color_hover")} style={{ backgroundColor: colorPickerValue.button_background_color_hover.hex }}></div>
                             </div>
                             <div className="width-30">
                                 <label>Selected</label>
-                                <div className="open_picker mt-5" onClick={() => openColorPicker("button_background_color_seleted")} style={{ backgroundColor: colorPickerValue.button_background_color_seleted.hex }}></div>
-                                {displayColorPicker == "button_background_color_seleted" ? <ColorPickers closeColorPicker={() => closeColorPicker("button_background_color_seleted")} field={"button_background_color_seleted"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.button_background_color_seleted} value={colorPickerValue.button_background_color_seleted.hex}></ColorPickers> : ''}
+                                <div ref={refs.button_background_color_seleted} className="open_picker mt-5" onClick={() => openColorPicker("button_background_color_seleted")} style={{ backgroundColor: colorPickerValue.button_background_color_seleted.hex }}></div>
                             </div>
                         </div>
                     </div>
@@ -540,7 +527,7 @@ export default function Dashboard(props) {
     }
 
     return (
-        <div style={{ height: '500px' }}>
+        <div style={{ height: '500px', display: active ? 'block' : 'none' }}>
             <Modal
                 open={active}
                 onClose={handleChange}
@@ -571,7 +558,7 @@ export default function Dashboard(props) {
                                         <div className="custom-value-option">
                                             <div className="value-preview mr-50 relative">
                                                 <span className="top_color" style={{ backgroundColor: colorPickerValue.one_color.hex }}></span>
-                                                <span className="bottom_color" style={{ borderRightColor: colorPickerValue.one_color.hex, borderBottomColor: colorPickerValue.one_color.hex }}></span>
+                                                <span className="bottom_color" style={{ borderBottomColor: colorPickerValue.two_color.hex, display: seletedTypeSwatch == '1' ? 'none' : 'block' }}></span>
                                             </div>
                                             <div className="select-type-swatch mr-50">
                                                 <Select
@@ -590,10 +577,11 @@ export default function Dashboard(props) {
                     <div className="modal_footer flex space-between mt-20">
                         <div style={{ display: importOldSwatch == true ? 'none' : '' }}><Button primary onClick={() => setImportOldSwatch(true)}>Import your old swatch images</Button></div>
                         <GetImportOldSwatch></GetImportOldSwatch>
-                        <div><Button primary>Save theme</Button></div>
+                        <div><Button primary disabled={change ? '' : 'disabled'}>Save</Button></div>
                     </div>
                 </Modal.Section>
             </Modal>
+            {displayColorPicker == "" ? '' : <ColorPickers closeColorPicker={() => closeColorPicker()} field={displayColorPicker} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={true} value={colorPickerValue[displayColorPicker].hex} position={positionColorPicker}></ColorPickers>}
         </div>
     );
 }

@@ -1,23 +1,11 @@
 import React, { Component } from 'react';
-import { Page, Card, FormLayout, Checkbox, Heading, TextField, Layout, Label } from '@shopify/polaris';
+import { Card, FormLayout, ChoiceList, Heading, Button, Layout } from '@shopify/polaris';
 import { useCallback, useRef, useState } from 'react';
 import ColorPickers from './ColorPickers';
 
 export default function CustomProductPage() {
-    const [displayColorPicker, setDisplayColorPicker] = useState({
-        swatch_border_color_nomal: false,
-        swatch_border_color_hover: false,
-        swatch_border_color_selected: false,
-        button_border_color_nomal: false,
-        button_border_color_hover: false,
-        button_border_color_selected: false,
-        text_color_nomal: false,
-        text_color_hover: false,
-        text_color_selected: false,
-        background_color_nomal: false,
-        background_color_hover: false,
-        background_color_selected: false,
-    });
+    const [change, setChange] = useState(false);
+    const [displayColorPicker, setDisplayColorPicker] = useState("");
     const [checkboxValue, setCheckboxValue] = useState({
         swatch_shape: 'square',
         swatch_size: 'medium',
@@ -30,6 +18,10 @@ export default function CustomProductPage() {
         text_style: 'default',
         button_background_effect: 'add shadow',
     });
+    const [positionColorPicker, setPositionColorPicker] = useState({
+        top: 0,
+        left: 0
+    })
     const [colorPickerValue, setColorPickerValue] = useState({
         swatch_border_color_nomal: {
             hex: "#000",
@@ -72,24 +64,45 @@ export default function CustomProductPage() {
     const [optionSizeHover, setOptionSizeHover] = useState(0);
     const [optionColorSelected, setOptionColorSelected] = useState(0);
     const [optionSizeSelected, setOptionSizeSelected] = useState(0);
-    const changeCheckboxValue = useCallback((field, value) => setCheckboxValue({
-        ...checkboxValue,
-        [field]: value
-    }))
+    const changeCheckboxValue = useCallback((field, value) => {
+        setCheckboxValue({
+            ...checkboxValue,
+            [field]: value[0]
+        });
+        setChange(true)
+    }
+    )
+
+    const refs = {
+        swatch_border_color_nomal: useRef(),
+        swatch_border_color_hover: useRef(),
+        swatch_border_color_selected: useRef(),
+        button_border_color_nomal: useRef(),
+        button_border_color_hover: useRef(),
+        button_border_color_selected: useRef(),
+        button_text_color_nomal: useRef(),
+        button_text_color_hover: useRef(),
+        button_text_color_selected: useRef(),
+        button_background_color_nomal: useRef(),
+        button_background_color_hover: useRef(),
+        button_background_color_seleted: useRef(),
+    }
 
     const openColorPicker = useCallback((field) => {
-        console.log("open");
-        setDisplayColorPicker({
-            ...displayColorPicker,
-            [field]: !displayColorPicker[field]
-        })
+        setDisplayColorPicker(field);
+        if (refs[field]) {
+            setPositionColorPicker({
+                top: refs[field].current.getBoundingClientRect().top,
+                left: refs[field].current.getBoundingClientRect().left,
+            })
+        }
     })
 
     const closeColorPicker = useCallback((field) => {
-        console.log("close");
-        setDisplayColorPicker({
-            ...displayColorPicker,
-            [field]: !displayColorPicker[field]
+        setDisplayColorPicker("");
+        setPositionColorPicker({
+            top: 0,
+            left: 0
         })
     })
 
@@ -97,7 +110,8 @@ export default function CustomProductPage() {
         setColorPickerValue({
             ...colorPickerValue,
             [field]: value
-        })
+        });
+        setChange(true)
     }
 
     const setBorderOptionColorPreview = (image, ele) => {
@@ -248,25 +262,14 @@ export default function CustomProductPage() {
                         <FormLayout>
                             <Heading element="h3">Swatch shape</Heading>
                             <div className="flex_wrap swatch_shape">
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="Circle"
-                                            checked={checkboxValue.swatch_shape == 'circle' ? true : false}
-                                            onChange={() => changeCheckboxValue('swatch_shape', 'circle')}
-                                        />
-                                    </div>
-
-                                </div>
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="Square"
-                                            checked={checkboxValue.swatch_shape == 'square' ? true : false}
-                                            onChange={() => changeCheckboxValue('swatch_shape', 'square')}
-                                        />
-                                    </div>
-                                </div>
+                                <ChoiceList
+                                    choices={[
+                                        { label: 'Circle', value: 'circle' },
+                                        { label: 'Square', value: 'square' },
+                                    ]}
+                                    selected={[checkboxValue.swatch_shape]}
+                                    onChange={(value) => changeCheckboxValue('swatch_shape', value)}
+                                />
                             </div>
                         </FormLayout>
                     </Card.Section>
@@ -274,33 +277,15 @@ export default function CustomProductPage() {
                         <FormLayout>
                             <Heading element="h3">Swatch size</Heading>
                             <div className="flex_wrap swatch_size">
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="Small"
-                                            checked={checkboxValue.swatch_size == 'small' ? true : false}
-                                            onChange={() => changeCheckboxValue('swatch_size', 'small')}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="Medium"
-                                            checked={checkboxValue.swatch_size == 'medium' ? true : false}
-                                            onChange={() => changeCheckboxValue('swatch_size', 'medium')}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="Large"
-                                            checked={checkboxValue.swatch_size == 'large' ? true : false}
-                                            onChange={() => changeCheckboxValue('swatch_size', 'large')}
-                                        />
-                                    </div>
-                                </div>
+                                <ChoiceList
+                                    choices={[
+                                        { label: 'Small', value: 'small' },
+                                        { label: 'Medium', value: 'medium' },
+                                        { label: 'Large', value: 'large' },
+                                    ]}
+                                    selected={[checkboxValue.swatch_size]}
+                                    onChange={(value) => changeCheckboxValue('swatch_size', value)}
+                                />
                             </div>
                         </FormLayout>
                     </Card.Section>
@@ -308,33 +293,15 @@ export default function CustomProductPage() {
                         <FormLayout>
                             <Heading element="h3">Swatch border style</Heading>
                             <div className="flex_wrap border_style">
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="None"
-                                            checked={checkboxValue.swatch_border_style == 'none' ? true : false}
-                                            onChange={() => changeCheckboxValue('swatch_border_style', 'none')}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="Single"
-                                            checked={checkboxValue.swatch_border_style == 'single' ? true : false}
-                                            onChange={() => changeCheckboxValue('swatch_border_style', 'single')}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="Double"
-                                            checked={checkboxValue.swatch_border_style == 'double' ? true : false}
-                                            onChange={() => changeCheckboxValue('swatch_border_style', 'double')}
-                                        />
-                                    </div>
-                                </div>
+                                <ChoiceList
+                                    choices={[
+                                        { label: 'None', value: 'none' },
+                                        { label: 'Single', value: 'single' },
+                                        { label: 'Double', value: 'double' },
+                                    ]}
+                                    selected={[checkboxValue.swatch_border_style]}
+                                    onChange={(value) => changeCheckboxValue('swatch_border_style', value)}
+                                />
                             </div>
                         </FormLayout>
                     </Card.Section>
@@ -344,18 +311,15 @@ export default function CustomProductPage() {
                             <div className="flex_wrap pickcolor relative">
                                 <div className="width-30">
                                     <label>Nomal</label>
-                                    <div className="open_picker mt-5" onClick={() => openColorPicker("swatch_border_color_nomal")} style={{ backgroundColor: colorPickerValue.swatch_border_color_nomal.hex }}></div>
-                                    {displayColorPicker.swatch_border_color_nomal ? <ColorPickers closeColorPicker={() => closeColorPicker("swatch_border_color_nomal")} field={"swatch_border_color_nomal"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.swatch_border_color_nomal} value={colorPickerValue.swatch_border_color_nomal.hex}></ColorPickers> : ''}
+                                    <div ref={refs.swatch_border_color_nomal} className="open_picker mt-5" onClick={() => openColorPicker("swatch_border_color_nomal")} style={{ backgroundColor: colorPickerValue.swatch_border_color_nomal.hex }}></div>
                                 </div>
                                 <div className="width-30">
                                     <label>Hover</label>
-                                    <div className="open_picker mt-5" onClick={() => openColorPicker("swatch_border_color_hover")} style={{ backgroundColor: colorPickerValue.swatch_border_color_hover.hex }}></div>
-                                    {displayColorPicker.swatch_border_color_hover ? <ColorPickers closeColorPicker={() => closeColorPicker("swatch_border_color_hover")} field={"swatch_border_color_hover"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.swatch_border_color_hover} value={colorPickerValue.swatch_border_color_hover.hex}></ColorPickers> : ''}
+                                    <div ref={refs.swatch_border_color_hover} className="open_picker mt-5" onClick={() => openColorPicker("swatch_border_color_hover")} style={{ backgroundColor: colorPickerValue.swatch_border_color_hover.hex }}></div>
                                 </div>
                                 <div className="width-30">
                                     <label>Selected</label>
-                                    <div className="open_picker mt-5" onClick={() => openColorPicker("swatch_border_color_selected")} style={{ backgroundColor: colorPickerValue.swatch_border_color_selected.hex }}></div>
-                                    {displayColorPicker.swatch_border_color_selected ? <ColorPickers closeColorPicker={() => closeColorPicker("swatch_border_color_selected")} field={"swatch_border_color_selected"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.swatch_border_color_selected} value={colorPickerValue.swatch_border_color_selected.hex}></ColorPickers> : ''}
+                                    <div ref={refs.swatch_border_color_selected} className="open_picker mt-5" onClick={() => openColorPicker("swatch_border_color_selected")} style={{ backgroundColor: colorPickerValue.swatch_border_color_selected.hex }}></div>
                                 </div>
                             </div>
                         </FormLayout>
@@ -365,84 +329,38 @@ export default function CustomProductPage() {
                             <Heading element="h3">Swatch hover effects</Heading>
                             <div className="background_effect flex_wrap">
                                 <p className="mb-10 width-100">Background effect on hover</p>
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="No effect"
-                                            checked={checkboxValue.swatch_background_effect == 'no effect' ? true : false}
-                                            onChange={() => changeCheckboxValue('swatch_background_effect', 'no effect')}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="Add glow"
-                                            checked={checkboxValue.swatch_background_effect == 'add glow' ? true : false}
-                                            onChange={() => changeCheckboxValue('swatch_background_effect', 'add glow')}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="Add shadow"
-                                            checked={checkboxValue.swatch_background_effect == 'add shadow' ? true : false}
-                                            onChange={() => changeCheckboxValue('swatch_background_effect', 'add shadow')}
-                                        />
-                                    </div>
-                                </div>
+                                <ChoiceList
+                                    choices={[
+                                        { label: 'No efect', value: 'no effect' },
+                                        { label: 'Add glow', value: 'add glow' },
+                                        { label: 'Add shadow', value: 'add shadow' },
+                                    ]}
+                                    selected={[checkboxValue.swatch_background_effect]}
+                                    onChange={(value) => changeCheckboxValue('swatch_background_effect', value)}
+                                />
                             </div>
                             <div className="zoom_image flex_wrap">
                                 <p className="mb-10 width-100">Zoom image on hover</p>
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="No zoom"
-                                            checked={checkboxValue.swatch_zoom_image == 'no zoom' ? true : false}
-                                            onChange={() => changeCheckboxValue('swatch_zoom_image', 'no zoom')}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="Zoom"
-                                            checked={checkboxValue.swatch_zoom_image == 'zoom' ? true : false}
-                                            onChange={() => changeCheckboxValue('swatch_zoom_image', 'zoom')}
-                                        />
-                                    </div>
-                                </div>
+                                <ChoiceList
+                                    choices={[
+                                        { label: 'No zoom', value: 'no zoom' },
+                                        { label: 'Zoom', value: 'zoom' },
+                                    ]}
+                                    selected={[checkboxValue.swatch_zoom_image]}
+                                    onChange={(value) => changeCheckboxValue('swatch_zoom_image', value)}
+                                />
                             </div>
                             <div className="size_change flex_wrap">
                                 <p className="mb-10 width-100">Size change on hover (not applicable for swatches in slider):</p>
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="No change"
-                                            checked={checkboxValue.swatch_size_change == 'no change' ? true : false}
-                                            onChange={() => changeCheckboxValue('swatch_size_change', 'no change')}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="Reduce zise"
-                                            checked={checkboxValue.swatch_size_change == 'reduce size' ? true : false}
-                                            onChange={() => changeCheckboxValue('swatch_size_change', 'reduce size')}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="Increase size"
-                                            checked={checkboxValue.swatch_size_change == 'increase size' ? true : false}
-                                            onChange={() => changeCheckboxValue('swatch_size_change', 'increase size')}
-                                        />
-                                    </div>
-                                </div>
+                                <ChoiceList
+                                    choices={[
+                                        { label: 'No change', value: 'no change' },
+                                        { label: 'Reduce zise', value: 'reduce size' },
+                                        { label: 'Increase size', value: 'increase size' },
+                                    ]}
+                                    selected={[checkboxValue.swatch_size_change]}
+                                    onChange={(value) => changeCheckboxValue('swatch_size_change', value)}
+                                />
                             </div>
                         </FormLayout>
                     </Card.Section>
@@ -452,24 +370,14 @@ export default function CustomProductPage() {
                         <FormLayout>
                             <Heading element="h3">Button corner</Heading>
                             <div className="flex_wrap swatch_size">
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="Sharp"
-                                            checked={checkboxValue.button_corner == 'sharp' ? true : false}
-                                            onChange={() => changeCheckboxValue('button_corner', 'sharp')}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="Rounded"
-                                            checked={checkboxValue.button_corner == 'rounded' ? true : false}
-                                            onChange={() => changeCheckboxValue('button_corner', 'rounded')}
-                                        />
-                                    </div>
-                                </div>
+                                <ChoiceList
+                                    choices={[
+                                        { label: 'Sharp', value: 'sharp' },
+                                        { label: 'Rounded', value: 'rounded' },
+                                    ]}
+                                    selected={[checkboxValue.button_corner]}
+                                    onChange={(value) => changeCheckboxValue('button_corner', value)}
+                                />
                             </div>
                         </FormLayout>
                     </Card.Section>
@@ -477,33 +385,15 @@ export default function CustomProductPage() {
                         <FormLayout>
                             <Heading element="h3">Button size</Heading>
                             <div className="flex_wrap swatch_size">
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="Small"
-                                            checked={checkboxValue.button_size == 'small' ? true : false}
-                                            onChange={() => changeCheckboxValue('button_size', 'small')}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="Medium"
-                                            checked={checkboxValue.button_size == 'medium' ? true : false}
-                                            onChange={() => changeCheckboxValue('button_size', 'medium')}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="Large"
-                                            checked={checkboxValue.button_size == 'large' ? true : false}
-                                            onChange={() => changeCheckboxValue('button_size', 'large')}
-                                        />
-                                    </div>
-                                </div>
+                            <ChoiceList
+                                    choices={[
+                                        { label: 'Small', value: 'small' },
+                                        { label: 'Medium', value: 'medium' },
+                                        { label: 'Large', value: 'large' },
+                                    ]}
+                                    selected={[checkboxValue.button_size]}
+                                    onChange={(value) => changeCheckboxValue('button_size', value)}
+                                />
                             </div>
                         </FormLayout>
                     </Card.Section>
@@ -513,18 +403,15 @@ export default function CustomProductPage() {
                             <div className="flex_wrap pickcolor relative">
                                 <div className="width-30">
                                     <label>Nomal</label>
-                                    <div className="open_picker mt-5" onClick={() => openColorPicker("button_border_color_nomal")} style={{ backgroundColor: colorPickerValue.button_border_color_nomal.hex }}></div>
-                                    {displayColorPicker.button_border_color_nomal ? <ColorPickers closeColorPicker={() => closeColorPicker("button_border_color_nomal")} field={"button_border_color_nomal"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.button_border_color_nomal} value={colorPickerValue.button_border_color_nomal.hex}></ColorPickers> : ''}
+                                    <div ref={refs.button_border_color_nomal} className="open_picker mt-5" onClick={() => openColorPicker("button_border_color_nomal")} style={{ backgroundColor: colorPickerValue.button_border_color_nomal.hex }}></div>
                                 </div>
                                 <div className="width-30">
                                     <label>Hover</label>
-                                    <div className="open_picker mt-5" onClick={() => openColorPicker("button_border_color_hover")} style={{ backgroundColor: colorPickerValue.button_border_color_hover.hex }}></div>
-                                    {displayColorPicker.button_border_color_hover ? <ColorPickers closeColorPicker={() => closeColorPicker("button_border_color_hover")} field={"button_border_color_hover"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.button_border_color_hover} value={colorPickerValue.button_border_color_hover.hex}></ColorPickers> : ''}
+                                    <div ref={refs.button_border_color_hover} className="open_picker mt-5" onClick={() => openColorPicker("button_border_color_hover")} style={{ backgroundColor: colorPickerValue.button_border_color_hover.hex }}></div>
                                 </div>
                                 <div className="width-30">
                                     <label>Selected</label>
-                                    <div className="open_picker mt-5" onClick={() => openColorPicker("button_border_color_selected")} style={{ backgroundColor: colorPickerValue.button_border_color_selected.hex }}></div>
-                                    {displayColorPicker.button_border_color_selected ? <ColorPickers closeColorPicker={() => closeColorPicker("button_border_color_selected")} field={"button_border_color_selected"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.button_border_color_selected} value={colorPickerValue.button_border_color_selected.hex}></ColorPickers> : ''}
+                                    <div ref={refs.button_border_color_selected} className="open_picker mt-5" onClick={() => openColorPicker("button_border_color_selected")} style={{ backgroundColor: colorPickerValue.button_border_color_selected.hex }}></div>
                                 </div>
                             </div>
                         </FormLayout>
@@ -533,33 +420,15 @@ export default function CustomProductPage() {
                         <FormLayout>
                             <Heading element="h3">Text style</Heading>
                             <div className="flex_wrap border_style">
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="Default"
-                                            checked={checkboxValue.text_style == 'default' ? true : false}
-                                            onChange={() => changeCheckboxValue('text_style', 'default')}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="Lowercase"
-                                            checked={checkboxValue.text_style == 'lowercase' ? true : false}
-                                            onChange={() => changeCheckboxValue('text_style', 'lowercase')}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="Uppercase"
-                                            checked={checkboxValue.text_style == 'uppercase' ? true : false}
-                                            onChange={() => changeCheckboxValue('text_style', 'uppercase')}
-                                        />
-                                    </div>
-                                </div>
+                            <ChoiceList
+                                    choices={[
+                                        { label: 'Default', value: 'default' },
+                                        { label: 'Lowercase', value: 'lowercase' },
+                                        { label: 'Uppercase', value: 'uppercase' },
+                                    ]}
+                                    selected={[checkboxValue.text_style]}
+                                    onChange={(value) => changeCheckboxValue('text_style', value)}
+                                />
                             </div>
                         </FormLayout>
                     </Card.Section>
@@ -569,18 +438,15 @@ export default function CustomProductPage() {
                             <div className="flex_wrap pickcolor relative">
                                 <div className="width-30">
                                     <label>Nomal</label>
-                                    <div className="open_picker mt-5" onClick={() => openColorPicker("text_color_nomal")} style={{ backgroundColor: colorPickerValue.text_color_nomal.hex }}></div>
-                                    {displayColorPicker.text_color_nomal ? <ColorPickers closeColorPicker={() => closeColorPicker("text_color_nomal")} field={"text_color_nomal"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.text_color_nomal} value={colorPickerValue.text_color_nomal.hex}></ColorPickers> : ''}
+                                    <div ref={refs.text_color_nomal} className="open_picker mt-5" onClick={() => openColorPicker("text_color_nomal")} style={{ backgroundColor: colorPickerValue.text_color_nomal.hex }}></div>
                                 </div>
                                 <div className="width-30">
                                     <label>Hover</label>
-                                    <div className="open_picker mt-5" onClick={() => openColorPicker("text_color_hover")} style={{ backgroundColor: colorPickerValue.text_color_hover.hex }}></div>
-                                    {displayColorPicker.text_color_hover ? <ColorPickers closeColorPicker={() => closeColorPicker("text_color_hover")} field={"text_color_hover"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.text_color_hover} value={colorPickerValue.text_color_hover.hex}></ColorPickers> : ''}
+                                    <div ref={refs.text_color_hover} className="open_picker mt-5" onClick={() => openColorPicker("text_color_hover")} style={{ backgroundColor: colorPickerValue.text_color_hover.hex }}></div>
                                 </div>
                                 <div className="width-30">
                                     <label>Selected</label>
-                                    <div className="open_picker mt-5" onClick={() => openColorPicker("text_color_selected")} style={{ backgroundColor: colorPickerValue.text_color_selected.hex }}></div>
-                                    {displayColorPicker.text_color_selected ? <ColorPickers closeColorPicker={() => closeColorPicker("text_color_selected")} field={"text_color_selected"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.text_color_selected} value={colorPickerValue.text_color_selected.hex}></ColorPickers> : ''}
+                                    <div ref={refs.text_color_selected} className="open_picker mt-5" onClick={() => openColorPicker("text_color_selected")} style={{ backgroundColor: colorPickerValue.text_color_selected.hex }}></div>
                                 </div>
                             </div>
                         </FormLayout>
@@ -592,17 +458,14 @@ export default function CustomProductPage() {
                                 <div className="width-30">
                                     <label>Nomal</label>
                                     <div className="open_picker" onClick={() => openColorPicker("background_color_nomal")} style={{ backgroundColor: colorPickerValue.background_color_nomal.hex }}></div>
-                                    {displayColorPicker.background_color_nomal ? <ColorPickers closeColorPicker={() => closeColorPicker("background_color_nomal")} field={"background_color_nomal"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.background_color_nomal} value={colorPickerValue.background_color_nomal.hex}></ColorPickers> : ''}
                                 </div>
                                 <div className="width-30">
                                     <label>Nomal</label>
                                     <div className="open_picker" onClick={() => openColorPicker("background_color_hover")} style={{ backgroundColor: colorPickerValue.background_color_hover.hex }}></div>
-                                    {displayColorPicker.background_color_hover ? <ColorPickers closeColorPicker={() => closeColorPicker("background_color_hover")} field={"background_color_hover"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.background_color_hover} value={colorPickerValue.background_color_hover.hex}></ColorPickers> : ''}
                                 </div>
                                 <div className="width-30">
                                     <label>Nomal</label>
                                     <div className="open_picker" onClick={() => openColorPicker("background_color_selected")} style={{ backgroundColor: colorPickerValue.background_color_selected.hex }}></div>
-                                    {displayColorPicker.background_color_selected ? <ColorPickers closeColorPicker={() => closeColorPicker("background_color_selected")} field={"background_color_selected"} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={displayColorPicker.background_color_selected} value={colorPickerValue.background_color_selected.hex}></ColorPickers> : ''}
                                 </div>
                             </div>
                         </FormLayout>
@@ -612,33 +475,15 @@ export default function CustomProductPage() {
                             <Heading element="h3">Button hover effects</Heading>
                             <div className="background_effect flex_wrap">
                                 <p className="mb-10 width-100">Background effect on hover</p>
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="No effect"
-                                            checked={checkboxValue.button_background_effect == 'no effect' ? true : false}
-                                            onChange={() => changeCheckboxValue('button_background_effect', 'no effect')}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="Add glow"
-                                            checked={checkboxValue.button_background_effect == 'add glow' ? true : false}
-                                            onChange={() => changeCheckboxValue('button_background_effect', 'add glow')}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="mr-25">
-                                    <div>
-                                        <Checkbox
-                                            label="Add shadow"
-                                            checked={checkboxValue.button_background_effect == 'add shadow' ? true : false}
-                                            onChange={() => changeCheckboxValue('button_background_effect', 'add shadow')}
-                                        />
-                                    </div>
-                                </div>
+                                <ChoiceList
+                                    choices={[
+                                        { label: 'No effect', value: 'no effect' },
+                                        { label: 'Add glow', value: 'add glow' },
+                                        { label: 'Add shadow', value: 'add shadow' },
+                                    ]}
+                                    selected={[checkboxValue.button_background_effect]}
+                                    onChange={(value) => changeCheckboxValue('button_background_effect', value)}
+                                />
                             </div>
                         </FormLayout>
                     </Card.Section>
@@ -750,7 +595,9 @@ export default function CustomProductPage() {
                         </Layout.Section>
                     </Layout>
                 </Card>
+                <div className="flex-end mt-10"><Button primary disabled={change ? '' : 'disabled'} >Save</Button></div>
             </div>
+            {displayColorPicker == "" ? '' : <ColorPickers closeColorPicker={() => closeColorPicker()} field={displayColorPicker} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={true} value={colorPickerValue[displayColorPicker].hex} position={positionColorPicker}></ColorPickers>}
         </div>
     );
 }
