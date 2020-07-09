@@ -22,6 +22,9 @@ export default function CustomProductPage() {
         top: 0,
         left: 0
     })
+    const [showNumberProductInStock, setShowNumberProductInStock] = useState(['enable']);
+    const handleShowNumberProductInStock = useCallback((value) => setShowNumberProductInStock(value), []);
+
     const [colorPickerValue, setColorPickerValue] = useState({
         swatch_border_color_nomal: {
             hex: "#000",
@@ -41,22 +44,22 @@ export default function CustomProductPage() {
         button_border_color_selected: {
             hex: "#000",
         },
-        text_color_nomal: {
+        button_text_color_nomal: {
             hex: "#000",
         },
-        text_color_hover: {
+        button_text_color_hover: {
             hex: "#000",
         },
-        text_color_selected: {
+        button_text_color_selected: {
             hex: "#000",
         },
-        background_color_nomal: {
+        button_background_color_nomal: {
             hex: "#fff",
         },
-        background_color_hover: {
+        button_background_color_hover: {
             hex: "#000",
         },
-        background_color_selected: {
+        button_background_color_selected: {
             hex: "#000",
         },
     })
@@ -85,14 +88,15 @@ export default function CustomProductPage() {
         button_text_color_selected: useRef(),
         button_background_color_nomal: useRef(),
         button_background_color_hover: useRef(),
-        button_background_color_seleted: useRef(),
+        button_background_color_selected: useRef(),
+        product_page: useRef(),
     }
 
     const openColorPicker = useCallback((field) => {
         setDisplayColorPicker(field);
         if (refs[field]) {
             setPositionColorPicker({
-                top: refs[field].current.getBoundingClientRect().top,
+                top: refs[field].current.getBoundingClientRect().top + 109 - refs.product_page.current.getBoundingClientRect().top,
                 left: refs[field].current.getBoundingClientRect().left,
             })
         }
@@ -120,7 +124,7 @@ export default function CustomProductPage() {
                 return ({
                     borderColor: colorPickerValue.swatch_border_color_nomal.hex
                 })
-            } else if (optionColorHover == image && ele != "image") {
+            } else if (optionColorHover == image && ele != "image" && optionColorSelected != image) {
                 return ({
                     borderColor: colorPickerValue.swatch_border_color_hover.hex
                 })
@@ -143,7 +147,7 @@ export default function CustomProductPage() {
                     return ({
                         borderColor: colorPickerValue.swatch_border_color_nomal.hex
                     })
-                } else if (optionColorHover == image) {
+                } else if (optionColorHover == image && optionColorSelected != image) {
                     return ({
                         borderColor: colorPickerValue.swatch_border_color_hover.hex
                     })
@@ -173,29 +177,29 @@ export default function CustomProductPage() {
         }
     }
     const setBorderOptionSizePreview = (button, ele) => {
-        if (button == optionSizeHover) {
+        if (button == optionSizeHover && button != optionSizeSelected) {
             if (button != optionSizeSelected) {
                 if (ele == "button") {
                     return ({
                         borderColor: colorPickerValue.button_border_color_hover.hex,
                         textTransform: checkboxValue.text_style,
-                        backgroundColor: colorPickerValue.background_color_hover.hex
+                        backgroundColor: colorPickerValue.button_background_color_hover.hex
                     })
                 } else {
                     return ({
-                        color: colorPickerValue.text_color_hover.hex,
+                        color: colorPickerValue.button_text_color_hover.hex,
                     })
                 }
             } else {
                 if (ele == "button") {
                     return ({
                         borderColor: colorPickerValue.button_border_color_selected.hex,
-                        textTransform: checkboxValue.text_style,
-                        backgroundColor: colorPickerValue.background_color_selected.hex
+                        textTransform: checkboxValue.button_text_style,
+                        backgroundColor: colorPickerValue.button_background_color_selected.hex
                     })
                 } else {
                     return ({
-                        color: colorPickerValue.text_color_selected.hex,
+                        color: colorPickerValue.button_text_color_selected.hex,
                     })
                 }
             }
@@ -203,24 +207,24 @@ export default function CustomProductPage() {
             if (ele == "button") {
                 return ({
                     borderColor: colorPickerValue.button_border_color_selected.hex,
-                    textTransform: checkboxValue.text_style,
-                    backgroundColor: colorPickerValue.background_color_selected.hex
+                    textTransform: checkboxValue.button_text_style,
+                    backgroundColor: colorPickerValue.button_background_color_selected.hex
                 })
             } else {
                 return ({
-                    color: colorPickerValue.text_color_selected.hex,
+                    color: colorPickerValue.button_text_color_selected.hex,
                 })
             }
         } else {
             if (ele == "button") {
                 return ({
                     borderColor: colorPickerValue.button_border_color_nomal.hex,
-                    textTransform: checkboxValue.text_style,
-                    backgroundColor: colorPickerValue.background_color_nomal.hex
+                    textTransform: checkboxValue.button_text_style,
+                    backgroundColor: colorPickerValue.button_background_color_nomal.hex
                 })
             } else {
                 return ({
-                    color: colorPickerValue.text_color_nomal.hex,
+                    color: colorPickerValue.button_text_color_nomal.hex,
                 })
             }
         }
@@ -255,7 +259,7 @@ export default function CustomProductPage() {
     const classSwatch = checkboxValue.swatch_border_style + " " + swatch_zoom_image + " " + " image_variant_preview";
     const classButton = "button_" + checkboxValue.button_size + " " + checkboxValue.text_style + " " + button_background_effect + " " + checkboxValue.button_corner;
     return (
-        <div className="flex product_page">
+        <div ref={refs.product_page} className="flex product_page">
             <div className="width-25 swatch_custom height-100 scroll-y">
                 <Card>
                     <Card.Section>
@@ -385,7 +389,7 @@ export default function CustomProductPage() {
                         <FormLayout>
                             <Heading element="h3">Button size</Heading>
                             <div className="flex_wrap swatch_size">
-                            <ChoiceList
+                                <ChoiceList
                                     choices={[
                                         { label: 'Small', value: 'small' },
                                         { label: 'Medium', value: 'medium' },
@@ -420,7 +424,7 @@ export default function CustomProductPage() {
                         <FormLayout>
                             <Heading element="h3">Text style</Heading>
                             <div className="flex_wrap border_style">
-                            <ChoiceList
+                                <ChoiceList
                                     choices={[
                                         { label: 'Default', value: 'default' },
                                         { label: 'Lowercase', value: 'lowercase' },
@@ -438,15 +442,15 @@ export default function CustomProductPage() {
                             <div className="flex_wrap pickcolor relative">
                                 <div className="width-30">
                                     <label>Nomal</label>
-                                    <div ref={refs.text_color_nomal} className="open_picker mt-5" onClick={() => openColorPicker("text_color_nomal")} style={{ backgroundColor: colorPickerValue.text_color_nomal.hex }}></div>
+                                    <div ref={refs.button_text_color_nomal} className="open_picker mt-5" onClick={() => openColorPicker("button_text_color_nomal")} style={{ backgroundColor: colorPickerValue.button_text_color_nomal.hex }}></div>
                                 </div>
                                 <div className="width-30">
                                     <label>Hover</label>
-                                    <div ref={refs.text_color_hover} className="open_picker mt-5" onClick={() => openColorPicker("text_color_hover")} style={{ backgroundColor: colorPickerValue.text_color_hover.hex }}></div>
+                                    <div ref={refs.button_text_color_hover} className="open_picker mt-5" onClick={() => openColorPicker("button_text_color_hover")} style={{ backgroundColor: colorPickerValue.button_text_color_hover.hex }}></div>
                                 </div>
                                 <div className="width-30">
                                     <label>Selected</label>
-                                    <div ref={refs.text_color_selected} className="open_picker mt-5" onClick={() => openColorPicker("text_color_selected")} style={{ backgroundColor: colorPickerValue.text_color_selected.hex }}></div>
+                                    <div ref={refs.button_text_color_selected} className="open_picker mt-5" onClick={() => openColorPicker("button_text_color_selected")} style={{ backgroundColor: colorPickerValue.button_text_color_selected.hex }}></div>
                                 </div>
                             </div>
                         </FormLayout>
@@ -457,15 +461,15 @@ export default function CustomProductPage() {
                             <div className="flex_wrap pickcolor relative">
                                 <div className="width-30">
                                     <label>Nomal</label>
-                                    <div className="open_picker" onClick={() => openColorPicker("background_color_nomal")} style={{ backgroundColor: colorPickerValue.background_color_nomal.hex }}></div>
+                                    <div ref={refs.button_background_color_nomal} className="open_picker" onClick={() => openColorPicker("button_background_color_nomal")} style={{ backgroundColor: colorPickerValue.button_background_color_nomal.hex }}></div>
                                 </div>
                                 <div className="width-30">
-                                    <label>Nomal</label>
-                                    <div className="open_picker" onClick={() => openColorPicker("background_color_hover")} style={{ backgroundColor: colorPickerValue.background_color_hover.hex }}></div>
+                                    <label>Hover</label>
+                                    <div ref={refs.button_background_color_hover} className="open_picker" onClick={() => openColorPicker("button_background_color_hover")} style={{ backgroundColor: colorPickerValue.button_background_color_hover.hex }}></div>
                                 </div>
                                 <div className="width-30">
-                                    <label>Nomal</label>
-                                    <div className="open_picker" onClick={() => openColorPicker("background_color_selected")} style={{ backgroundColor: colorPickerValue.background_color_selected.hex }}></div>
+                                    <label>Selected</label>
+                                    <div ref={refs.button_background_color_selected} className="open_picker" onClick={() => openColorPicker("button_background_color_selected")} style={{ backgroundColor: colorPickerValue.button_background_color_selected.hex }}></div>
                                 </div>
                             </div>
                         </FormLayout>
@@ -483,6 +487,23 @@ export default function CustomProductPage() {
                                     ]}
                                     selected={[checkboxValue.button_background_effect]}
                                     onChange={(value) => changeCheckboxValue('button_background_effect', value)}
+                                />
+                            </div>
+                        </FormLayout>
+                    </Card.Section>
+                </Card>
+                <Card>
+                    <Card.Section>
+                        <FormLayout>
+                            <div className="show_numer_product_in_stock flex_wrap">
+                                <p className="mb-10 width-100">Show number products in stock</p>
+                                <ChoiceList
+                                    choices={[
+                                        { label: 'Enable', value: 'enable' },
+                                        { label: 'Disable', value: 'disable' },
+                                    ]}
+                                    selected={showNumberProductInStock}
+                                    onChange={handleShowNumberProductInStock}
                                 />
                             </div>
                         </FormLayout>
@@ -590,8 +611,12 @@ export default function CustomProductPage() {
                                             </li>
                                         </ul>
                                     </div>
+                                    {optionSizeSelected != 0 || optionColorSelected != 0 ? <div className="number_product_in_stock">
+                                        <p><strong>ONLY 7 IN STOCK.</strong></p>
+                                    </div> : ""}
                                 </Card.Section>
                             </Card>
+
                         </Layout.Section>
                     </Layout>
                 </Card>

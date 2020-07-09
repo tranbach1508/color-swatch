@@ -42,11 +42,9 @@ class Option extends Seeder
 			// 		"background":"not effect",
 			// 		"zoom_image":"no zoom",
 			// 		"size_change":"no change"
-			// 	}
-            // },
-            // {
+			// 	},
 			// 	"button_size":"small",
-			// "border_style": "single",
+			// 	"border_style": "single",
 			// 	"border_color":{
 			// 		"normal": "#000",
 			// 		"hover":"#000",

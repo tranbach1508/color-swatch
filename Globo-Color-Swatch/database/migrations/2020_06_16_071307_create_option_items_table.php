@@ -15,11 +15,15 @@ class CreateOptionItemsTable extends Migration
     {
         Schema::create('option_items', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('option_id');
+            $table->integer('option_id')->unsigned();
             $table->string('value');
-            $table->integer('select_type');
-            $table->text('custom');
+            $table->string('product_id');
+            $table->integer('select_type')->nullable();
+            $table->text('custom')->nullable();
             $table->timestamps();
+            $table->foreign('option_id')
+                ->references('id')->on('options')
+                ->onDelete('cascade');
         });
     }
 

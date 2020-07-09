@@ -16,9 +16,6 @@ Route::any('authorize', 'AuthController@index');
 Route::prefix('admin')->group(function () {
     Route::any('/{path?}', 'AdminController@index');
 });
-
-// Route::prefix('api')->group(function () {
-//     Route::get('rules',    'GetApiController@getCondition');
-//     Route::get('getform',    'GetApiController@getForm');
-//     Route::post('submitform',    'GetApiController@submitQuoteApi');
-// });
+Route::prefix('api')->group(function(){
+    Route::get('/options','ApiController@getOptions');
+});

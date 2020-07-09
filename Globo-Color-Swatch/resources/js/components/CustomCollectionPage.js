@@ -41,22 +41,22 @@ export default function CustomCollectionPage() {
         button_border_color_selected: {
             hex: "#000",
         },
-        text_color_nomal: {
+        button_text_color_nomal: {
             hex: "#000",
         },
-        text_color_hover: {
+        button_text_color_hover: {
             hex: "#000",
         },
-        text_color_selected: {
+        button_text_color_selected: {
             hex: "#000",
         },
-        background_color_nomal: {
+        button_background_color_nomal: {
             hex: "#fff",
         },
-        background_color_hover: {
+        button_background_color_hover: {
             hex: "#000",
         },
-        background_color_selected: {
+        button_background_color_selected: {
             hex: "#000",
         },
     })
@@ -68,12 +68,13 @@ export default function CustomCollectionPage() {
         button_border_color_nomal: useRef(),
         button_border_color_hover: useRef(),
         button_border_color_selected: useRef(),
-        text_color_nomal: useRef(),
-        text_color_hover: useRef(),
-        text_color_selected: useRef(),
-        background_color_nomal: useRef(),
-        background_color_hover: useRef(),
-        background_color_selected: useRef(),
+        button_text_color_nomal: useRef(),
+        button_text_color_hover: useRef(),
+        button_text_color_selected: useRef(),
+        button_background_color_nomal: useRef(),
+        button_background_color_hover: useRef(),
+        button_background_color_selected: useRef(),
+        collection_page: useRef(),
     }
 
     const [optionColorHover, setOptionColorHover] = useState(0);
@@ -93,10 +94,12 @@ export default function CustomCollectionPage() {
         setDisplayColorPicker(field);
         if (refs[field]) {
             setPositionColorPicker({
-                top: refs[field].current.getBoundingClientRect().top,
+                top: refs[field].current.getBoundingClientRect().top + 109 - refs.collection_page.current.getBoundingClientRect().top,
                 left: refs[field].current.getBoundingClientRect().left,
             })
+            console.log(refs[field].current.getBoundingClientRect().top);
         }
+        console.log(refs.collection_page.current.getBoundingClientRect().top);
     })
 
     const closeColorPicker = useCallback(() => {
@@ -180,11 +183,11 @@ export default function CustomCollectionPage() {
                     return ({
                         borderColor: colorPickerValue.button_border_color_hover.hex,
                         textTransform: checkboxValue.text_style,
-                        backgroundColor: colorPickerValue.background_color_hover.hex
+                        backgroundColor: colorPickerValue.button_background_color_hover.hex
                     })
                 } else {
                     return ({
-                        color: colorPickerValue.text_color_hover.hex,
+                        color: colorPickerValue.button_text_color_hover.hex,
                     })
                 }
             } else {
@@ -192,11 +195,11 @@ export default function CustomCollectionPage() {
                     return ({
                         borderColor: colorPickerValue.button_border_color_selected.hex,
                         textTransform: checkboxValue.text_style,
-                        backgroundColor: colorPickerValue.background_color_selected.hex
+                        backgroundColor: colorPickerValue.button_background_color_selected.hex
                     })
                 } else {
                     return ({
-                        color: colorPickerValue.text_color_selected.hex,
+                        color: colorPickerValue.button_text_color_selected.hex,
                     })
                 }
             }
@@ -205,11 +208,11 @@ export default function CustomCollectionPage() {
                 return ({
                     borderColor: colorPickerValue.button_border_color_selected.hex,
                     textTransform: checkboxValue.text_style,
-                    backgroundColor: colorPickerValue.background_color_selected.hex
+                    backgroundColor: colorPickerValue.button_background_color_selected.hex
                 })
             } else {
                 return ({
-                    color: colorPickerValue.text_color_selected.hex,
+                    color: colorPickerValue.button_text_color_selected.hex,
                 })
             }
         } else {
@@ -217,11 +220,11 @@ export default function CustomCollectionPage() {
                 return ({
                     borderColor: colorPickerValue.button_border_color_nomal.hex,
                     textTransform: checkboxValue.text_style,
-                    backgroundColor: colorPickerValue.background_color_nomal.hex
+                    backgroundColor: colorPickerValue.button_background_color_nomal.hex
                 })
             } else {
                 return ({
-                    color: colorPickerValue.text_color_nomal.hex,
+                    color: colorPickerValue.button_text_color_nomal.hex,
                 })
             }
         }
@@ -258,7 +261,7 @@ export default function CustomCollectionPage() {
 
     const handleChange = useCallback((value) => setSelected(value), []);
     return (
-        <div className="flex collection_page">
+        <div ref={refs.collection_page} className="flex collection_page">
             <div className="width-25 swatch_custom height-100 scroll-y">
                 <Card>
                     <Card.Section>
@@ -441,15 +444,15 @@ export default function CustomCollectionPage() {
                             <div className="flex_wrap pickcolor relative">
                                 <div className="width-30">
                                     <label>Nomal</label>
-                                    <div ref={refs.text_color_nomal} className="open_picker mt-5" onClick={() => openColorPicker("text_color_nomal")} style={{ backgroundColor: colorPickerValue.text_color_nomal.hex }}></div>
+                                    <div ref={refs.button_text_color_nomal} className="open_picker mt-5" onClick={() => openColorPicker("button_text_color_nomal")} style={{ backgroundColor: colorPickerValue.button_text_color_nomal.hex }}></div>
                                 </div>
                                 <div className="width-30">
                                     <label>Hover</label>
-                                    <div ref={refs.text_color_hover} className="open_picker mt-5" onClick={() => openColorPicker("text_color_hover")} style={{ backgroundColor: colorPickerValue.text_color_hover.hex }}></div>
+                                    <div ref={refs.button_text_color_hover} className="open_picker mt-5" onClick={() => openColorPicker("button_text_color_hover")} style={{ backgroundColor: colorPickerValue.button_text_color_hover.hex }}></div>
                                 </div>
                                 <div className="width-30">
                                     <label>Selected</label>
-                                    <div ref={refs.text_color_selected} className="open_picker mt-5" onClick={() => openColorPicker("text_color_selected")} style={{ backgroundColor: colorPickerValue.text_color_selected.hex }}></div>
+                                    <div ref={refs.button_text_color_selected} className="open_picker mt-5" onClick={() => openColorPicker("button_text_color_selected")} style={{ backgroundColor: colorPickerValue.button_text_color_selected.hex }}></div>
                                 </div>
                             </div>
                         </FormLayout>
@@ -460,15 +463,15 @@ export default function CustomCollectionPage() {
                             <div className="flex_wrap pickcolor relative">
                                 <div className="width-30">
                                     <label>Nomal</label>
-                                    <div ref={refs.background_color_nomal} className="open_picker mt-5" onClick={() => openColorPicker("background_color_nomal")} style={{ backgroundColor: colorPickerValue.background_color_nomal.hex }}></div>
+                                    <div ref={refs.button_background_color_nomal} className="open_picker mt-5" onClick={() => openColorPicker("button_background_color_nomal")} style={{ backgroundColor: colorPickerValue.button_background_color_nomal.hex }}></div>
                                 </div>
                                 <div className="width-30">
                                     <label>Hover</label>
-                                    <div ref={refs.background_color_hover} className="open_picker mt-5" onClick={() => openColorPicker("background_color_hover")} style={{ backgroundColor: colorPickerValue.background_color_hover.hex }}></div>
+                                    <div ref={refs.button_background_color_hover} className="open_picker mt-5" onClick={() => openColorPicker("button_background_color_hover")} style={{ backgroundColor: colorPickerValue.button_background_color_hover.hex }}></div>
                                 </div>
                                 <div className="width-30">
                                     <label>Selected</label>
-                                    <div ref={refs.background_color_selected} className="open_picker mt-5" onClick={() => openColorPicker("background_color_selected")} style={{ backgroundColor: colorPickerValue.background_color_selected.hex }}></div>
+                                    <div ref={refs.button_background_color_selected} className="open_picker mt-5" onClick={() => openColorPicker("button_background_color_selected")} style={{ backgroundColor: colorPickerValue.button_background_color_selected.hex }}></div>
                                 </div>
                             </div>
                         </FormLayout>

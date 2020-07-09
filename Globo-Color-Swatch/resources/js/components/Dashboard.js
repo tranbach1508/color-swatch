@@ -1,37 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { useCallback, useRef, useState } from 'react';
 import { Page, Layout, Card, Icon, Button, Select } from '@shopify/polaris';
 import { ToolsMajorMonotone, DragHandleMinor } from '@shopify/polaris-icons';
 import { SortableContainer, SortableElement, sortableHandle } from 'react-sortable-hoc';
+import axios from 'axios';
 import { Switch } from 'antd';
 import arrayMove from 'array-move';
 import ModalOptionDetail from './ModalOptionDetail';
 
 export default function Dashboard() {
-    const [change,setChange] = useState(false);
-    const [items, setItem] = useState([
-        {
-            name: 'Color',
-            value: 'color'
-        },
-        {
-            name: 'Size',
-            value: 'size'
-        },
-        {
-            name: 'Weight',
-            value: 'weight'
-        },
-    ]);
+    const [change, setChange] = useState(false);
+    const [items, setItem] = useState([]);
     const [activeModal, setActiveModal] = useState({
         field: '',
         display_style: ''
     });
-    const [enableCollection, setEnableCollection] = useState({
-        color: false,
-        size: false,
-        weight: false,
-    });
+    const [enableCollection, setEnableCollection] = useState({});
 
     const onSortEnd = ({ oldIndex, newIndex }) => {
         setItem(arrayMove(items, oldIndex, newIndex));
@@ -48,23 +32,19 @@ export default function Dashboard() {
 
     const handleActiveModal = useCallback((field) => {
         setActiveModal({
-            field :field,
-            display_style: selectedDisplayStyle[field]
+            field: field,
+            display_style: selectedDisplayStyle[field.name]
         });
     });
 
     const closeModal = useCallback(() => {
         setActiveModal({
-            field :"",
+            field: "",
             display_style: ""
         });
     });
 
-    const [selectedDisplayStyle, setSelectedDisplayStyle] = useState({
-        color: 1,
-        size: 1,
-        weight: 1
-    });
+    const [selectedDisplayStyle, setSelectedDisplayStyle] = useState({});
 
     const handleSelectChange = (value, option) => {
         setSelectedDisplayStyle({
@@ -75,24 +55,47 @@ export default function Dashboard() {
     };
 
     const options = [
-        { label: 'Color or custom image swatch', value: '1' },
-        { label: 'Automated variant image swatch', value: '2' },
-        { label: 'Button', value: '3' },
-        { label: 'Dropdown list', value: '4' },
+        { label: 'Color or custom image swatch', value: 1 },
+        { label: 'Automated variant image swatch', value: 2 },
+        { label: 'Button', value: 3 },
+        { label: 'Dropdown list', value: 4 },
     ];
+
+    useEffect(() => {
+        const getOptions = async () => {
+            const result = await axios(
+                'http://localhost:88/Globo-Color-Swatch/public/api/options',
+            );
+            setItem(result.data.option);
+            console.log(result.data.option);
+            
+            var display_style = [];
+            var enable_collection = [];
+            Object.values(result.data.option).map((option,index) =>{
+                display_style[option.name] = option.display_style;
+            });
+            display_style = Object.assign({}, display_style);
+            Object.values(result.data.option).map((option,index) =>{
+                enable_collection[option.name] = JSON.parse(option.settings).status;
+            });
+            enable_collection = Object.assign({}, enable_collection);
+            setEnableCollection(enable_collection);
+        }
+        getOptions();
+    }, []);
 
     const DragHandle = sortableHandle(() => <Icon source={DragHandleMinor} />);
 
     const SortableItem = SortableElement((option) => {
         return (
             <tr className="Polaris-DataTable__TableRow">
-                <td><DragHandle></DragHandle></td>
-                <th className="Polaris-DataTable__Cell Polaris-DataTable__Cell--firstColumn" scope="row">{option.value.name} <a className="affects_product" href="integrate">(affects only 1 product)</a></th>
+                <td style={{cursor: 'grab'}}><DragHandle></DragHandle></td>
+                <th className="Polaris-DataTable__Cell Polaris-DataTable__Cell--firstColumn" scope="row">{option.value.name} <a className="affects_product" href="integrate">(affects only {option.value.products_count} product)</a></th>
                 <td className="Polaris-DataTable__Cell">
                     <Select
                         options={options}
-                        onChange={(value) => handleSelectChange(value, option.value.value)}
-                        value={selectedDisplayStyle[option.value.value]}
+                        onChange={(value) => handleSelectChange(value, option.value.name)}
+                        value={selectedDisplayStyle[option.value.name] ? selectedDisplayStyle[option.value.name] : option.value.display_style}
                     />
 
                 </td>
@@ -101,7 +104,7 @@ export default function Dashboard() {
                 </td>
                 <td className="Polaris-DataTable__Cell">
                     <div className="Polaris-ButtonGroup__Item">
-                        <a onClick={() =>handleActiveModal(option.value.value)} data-fancybox data-type="iframe" className="Polaris-Button resource-modal" >
+                        <a onClick={() => selectedDisplayStyle[option.value.name] != 2 && selectedDisplayStyle[option.value.name] != 4 ? handleActiveModal(option.value): ''} data-fancybox data-type="iframe" className={selectedDisplayStyle[option.value.name] != 2 && selectedDisplayStyle[option.value.name] != 4 ? "Polaris-Button resource-modal" : "Polaris-Button resource-modal disabled"}>
                             <Icon
                                 source={ToolsMajorMonotone} />
                         </a>
@@ -115,14 +118,12 @@ export default function Dashboard() {
     const SortableList = SortableContainer(({ items }) => {
         return (
             <tbody>
-                {items.map((value, index) => (
-                    <SortableItem key={`item-${value.value}`} index={index} value={value} />
+                {items.map((option, index) => (
+                    <SortableItem key={`item-${option.name}`} index={index} value={option} />
                 ))}
             </tbody>
         );
     });
-
-    
 
     return (
         <div id="dashboardPage">

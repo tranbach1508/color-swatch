@@ -18,8 +18,13 @@ export default function Dashboard(props) {
     const [borderStyle, setBoderStyle] = useState("single");
     const [seletedTypeSwatch, setSeletedTypeSwatch] = useState(1);
     const [variantOption, setVariantOption] = useState({
-        field: "",
-        display_style: ""
+        field: {
+            display_style: "",
+            id: "",
+            option_items: "",
+            settings: '',
+            shop_id: ''
+        },
     });
     const [swatchHoverEffect, setSwatchHoverEffect] = useState({
         background: "not effect",
@@ -101,15 +106,15 @@ export default function Dashboard(props) {
     }
 
 
-    useEffect(
-        () => {
-            setActive(props.active);
-            setVariantOption({
-                field: props.field,
-                display_style: props.displayStyle
-            })
-        }, [props.active], // giá trị được subcrive
+    useEffect(() => {
+        setActive(props.active);
+        setVariantOption({
+            field: props.field,
+            display_style: props.field.display_style
+        })
+    }, [props.active], // giá trị được subcrive
     );
+    console.log(variantOption);
 
     const openColorPicker = useCallback((field) => {
         if (refs[field]) {
@@ -132,8 +137,13 @@ export default function Dashboard(props) {
         setActive(false);
         props.closeModal();
         setVariantOption({
-            field: "",
-            display_style: ""
+            field: {
+                display_style: "",
+                id: "",
+                option_items: [],
+                settings: '',
+                shop_id: ''
+            },
         });
         setChange(true);
     });
@@ -526,12 +536,55 @@ export default function Dashboard(props) {
         }
     }
 
+    const ListValue = () => {
+        if (variantOption.field.option_items != "") {
+            return (
+                variantOption.field.option_items.map((value, index) => (
+                    <li key={index}>
+                        <div className="value-option">
+                            <h3 className="value-name mb-10">{value.value} <a className="affects_product">(affects only 1 product)</a></h3>
+                            <div className="custom-value-option">
+                                <div className="value-preview mr-50 relative">
+                                    <span className="top_color" style={{ backgroundColor: colorPickerValue.one_color.hex }}></span>
+                                    <span className="bottom_color" style={{ borderBottomColor: colorPickerValue.two_color.hex, display: seletedTypeSwatch == '1' ? 'none' : 'block' }}></span>
+                                </div>
+                                <div className="select-type-swatch mr-50">
+                                    <Select
+                                        options={options}
+                                        onChange={handleSelectChange}
+                                        value={seletedTypeSwatch}
+                                    />
+                                </div>
+                                <GetTypeSwatch></GetTypeSwatch>
+                            </div>
+                        </div>
+                    </li>
+                ))
+            )
+        } else {
+            return (
+                <div></div>
+            )
+        }
+    }
+
+    const FooterModal = () => {
+        return (
+            <div className="flex space-between">
+                <div style={{ display: importOldSwatch == true ? 'none' : '' }}><Button primary onClick={() => setImportOldSwatch(true)}>Import your old swatch images</Button></div>
+                <GetImportOldSwatch></GetImportOldSwatch>
+                <div><Button primary disabled={change ? '' : 'disabled'}>Save</Button></div>
+            </div>
+        )
+    }
+
     return (
         <div style={{ height: '500px', display: active ? 'block' : 'none' }}>
             <Modal
                 open={active}
                 onClose={handleChange}
-                title="Custom swatch | Option name: Color"
+                title={"Custom swatch | Option name: " + variantOption.field.name}
+                footer={<FooterModal></FooterModal>}
             >
                 <Modal.Section>
                     <Card>
@@ -552,33 +605,11 @@ export default function Dashboard(props) {
                         </Card.Section>
                         <Card.Section>
                             <ul className="list_value_option pl-0">
-                                <li>
-                                    <div className="value-option">
-                                        <h3 className="value-name mb-10">Red <a className="affects_product">(affects only 1 product)</a></h3>
-                                        <div className="custom-value-option">
-                                            <div className="value-preview mr-50 relative">
-                                                <span className="top_color" style={{ backgroundColor: colorPickerValue.one_color.hex }}></span>
-                                                <span className="bottom_color" style={{ borderBottomColor: colorPickerValue.two_color.hex, display: seletedTypeSwatch == '1' ? 'none' : 'block' }}></span>
-                                            </div>
-                                            <div className="select-type-swatch mr-50">
-                                                <Select
-                                                    options={options}
-                                                    onChange={handleSelectChange}
-                                                    value={seletedTypeSwatch}
-                                                />
-                                            </div>
-                                            <GetTypeSwatch></GetTypeSwatch>
-                                        </div>
-                                    </div>
-                                </li>
+                                <ListValue></ListValue>
                             </ul>
                         </Card.Section>
                     </Card>
-                    <div className="modal_footer flex space-between mt-20">
-                        <div style={{ display: importOldSwatch == true ? 'none' : '' }}><Button primary onClick={() => setImportOldSwatch(true)}>Import your old swatch images</Button></div>
-                        <GetImportOldSwatch></GetImportOldSwatch>
-                        <div><Button primary disabled={change ? '' : 'disabled'}>Save</Button></div>
-                    </div>
+
                 </Modal.Section>
             </Modal>
             {displayColorPicker == "" ? '' : <ColorPickers closeColorPicker={() => closeColorPicker()} field={displayColorPicker} changeColorPickerValue={(field, value) => changeColorPickerValue(field, value)} active={true} value={colorPickerValue[displayColorPicker].hex} position={positionColorPicker}></ColorPickers>}

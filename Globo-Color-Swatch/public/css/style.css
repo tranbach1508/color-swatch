@@ -412,3 +412,13 @@ button:focus{
     min-width: 200px;
     max-width: 200px;
 }
+.Polaris-Modal-Dialog__Modal{
+    max-height: 600px !important;
+}
+.disabled{
+    opacity: 0.5;
+    cursor: auto !important;
+}
+.hidden-scroll{
+    overflow: hidden;
+}
