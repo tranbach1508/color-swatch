@@ -501,103 +501,103 @@ export default function CustomCollectionPage() {
                         <Layout.Section>
                             <Card>
                                 <Card.Section>
-                                    <div className="product_image">
-                                        <img src="http://localhost:88/Globo-Color-Swatch/public/images/variant1.jpg" />
-                                    </div>
-                                    <p className="product_name mb-10 mt-20">Shirt Woman Summer</p>
-                                    <p className="product_price mb-10 mt-20">€50,00</p>
-                                    <div className="option_color">
-                                        <Heading>Color</Heading>
-                                        <ul className="flex pl-0 mt-10">
-                                            <li className="mr-25">
-                                                <div
-                                                    className={checkboxValue.swatch_shape + " " + checkboxValue.swatch_border_style + " " + swatch_background_effect + " " + checkboxValue.swatch_size + " " + swatch_size_change}
-                                                    style={setBorderOptionColorPreview(1, "div")}
-                                                >
+                                    <div className="max-300">
+                                        <div className="product_image">
+                                            <img src="http://localhost:88/Globo-Color-Swatch/public/images/variant1.jpg" />
+                                        </div>
+                                        <p className="product_name mt-15 text_center">Shirt Woman Summer</p>
+                                        <p className="product_price text_center">€50,00</p>
+                                        <div className="option_color mt-5 center">
+                                            <ul className="flex pl-0 mt-5">
+                                                <li className="mr-25">
                                                     <div
-                                                        className={classSwatch}
-                                                        src="http://localhost:88/Globo-Color-Swatch/public/images/variant1.jpg"
-                                                        style={setBorderOptionColorPreview(1, "image")}
-                                                        onMouseEnter={() => { setOptionColorHover(1) }}
+                                                        className={checkboxValue.swatch_shape + " " + checkboxValue.swatch_border_style + " " + swatch_background_effect + " " + checkboxValue.swatch_size + " " + swatch_size_change}
+                                                        style={setBorderOptionColorPreview(1, "div")}
+                                                    >
+                                                        <div
+                                                            className={classSwatch}
+                                                            src="http://localhost:88/Globo-Color-Swatch/public/images/variant1.jpg"
+                                                            style={setBorderOptionColorPreview(1, "image")}
+                                                            onMouseEnter={() => { setOptionColorHover(1) }}
+                                                            onMouseLeave={() => { setOptionColorHover(0) }}
+                                                            onClick={() => setOptionColorSelected(1)}
+                                                        ></div>
+                                                    </div>
+                                                </li>
+                                                <li className="mr-25">
+                                                    <div
+                                                        className={checkboxValue.swatch_shape + " " + checkboxValue.swatch_border_style + " " + swatch_background_effect + " " + checkboxValue.swatch_size + " " + swatch_size_change}
+                                                        style={setBorderOptionColorPreview(2, "div")}
+                                                    >
+                                                        <div
+                                                            className={classSwatch}
+                                                            src="http://localhost:88/Globo-Color-Swatch/public/images/variant2.jpg"
+                                                            style={setBorderOptionColorPreview(2, "image")}
+                                                            onMouseEnter={() => { setOptionColorHover(2) }}
+                                                            onMouseLeave={() => { setOptionColorHover(0) }}
+                                                            onClick={() => setOptionColorSelected(2)}
+                                                        ></div>
+                                                    </div>
+                                                </li>
+                                                <li className="mr-25">
+                                                    <div
+                                                        className={checkboxValue.swatch_shape + " " + checkboxValue.swatch_border_style + " " + swatch_background_effect + " " + checkboxValue.swatch_size + " " + swatch_size_change}
+                                                        style={setBorderOptionColorPreview(3, "div")}
+                                                        onMouseEnter={() => { setOptionColorHover(3) }}
                                                         onMouseLeave={() => { setOptionColorHover(0) }}
-                                                        onClick={() => setOptionColorSelected(1)}
-                                                    ></div>
-                                                </div>
-                                            </li>
-                                            <li className="mr-25">
-                                                <div
-                                                    className={checkboxValue.swatch_shape + " " + checkboxValue.swatch_border_style + " " + swatch_background_effect + " " + checkboxValue.swatch_size + " " + swatch_size_change}
-                                                    style={setBorderOptionColorPreview(2, "div")}
-                                                >
-                                                    <div
-                                                        className={classSwatch}
-                                                        src="http://localhost:88/Globo-Color-Swatch/public/images/variant2.jpg"
-                                                        style={setBorderOptionColorPreview(2, "image")}
-                                                        onMouseEnter={() => { setOptionColorHover(2) }}
-                                                        onMouseLeave={() => { setOptionColorHover(0) }}
-                                                        onClick={() => setOptionColorSelected(2)}
-                                                    ></div>
-                                                </div>
-                                            </li>
-                                            <li className="mr-25">
-                                                <div
-                                                    className={checkboxValue.swatch_shape + " " + checkboxValue.swatch_border_style + " " + swatch_background_effect + " " + checkboxValue.swatch_size + " " + swatch_size_change}
-                                                    style={setBorderOptionColorPreview(3, "div")}
-                                                    onMouseEnter={() => { setOptionColorHover(3) }}
-                                                    onMouseLeave={() => { setOptionColorHover(0) }}
-                                                    onClick={() => setOptionColorSelected(3)}
-                                                >
-                                                    <div
-                                                        className={classSwatch}
-                                                        style={setBorderOptionColorPreview(3, "image")}
-                                                    ></div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div className="option_size">
-                                        <Heading>Size</Heading>
-                                        <ul className="flex pl-0 mt-10">
-                                            <li className="mr-25">
-                                                <button
-                                                    className={classButton}
-                                                    onMouseEnter={() => { setOptionSizeHover(1) }}
-                                                    onMouseLeave={() => { setOptionSizeHover(0) }}
-                                                    onClick={() => setOptionSizeSelected(1)}
-                                                    style={setBorderOptionSizePreview(1, "button")}
-                                                >
-                                                    <span
-                                                        style={setBorderOptionSizePreview(1, "span")}
-                                                    >M</span>
-                                                </button>
-                                            </li>
-                                            <li className="mr-25">
-                                                <button
-                                                    className={classButton}
-                                                    onMouseEnter={() => { setOptionSizeHover(2) }}
-                                                    onMouseLeave={() => { setOptionSizeHover(0) }}
-                                                    onClick={() => setOptionSizeSelected(2)}
-                                                    style={setBorderOptionSizePreview(2, "button")}
-                                                >
-                                                    <span
-                                                        style={setBorderOptionSizePreview(2, "span")}
-                                                    >Xl</span>
-                                                </button>
-                                            </li>
-                                            <li className="mr-25">
-                                                <button
-                                                    className={classButton}
-                                                    onMouseEnter={() => { setOptionSizeHover(3) }}
-                                                    onMouseLeave={() => { setOptionSizeHover(0) }}
-                                                    onClick={() => setOptionSizeSelected(3)}
-                                                    style={setBorderOptionSizePreview(3, "button")}
-                                                >
-                                                    <span
-                                                        style={setBorderOptionSizePreview(3, "span")}
-                                                    >Xxl</span>
-                                                </button>
-                                            </li>
-                                        </ul>
+                                                        onClick={() => setOptionColorSelected(3)}
+                                                    >
+                                                        <div
+                                                            className={classSwatch}
+                                                            style={setBorderOptionColorPreview(3, "image")}
+                                                        ></div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div className="option_size center">
+                                            <ul className="flex pl-0 mt-5">
+                                                <li className="mr-25">
+                                                    <button
+                                                        className={classButton}
+                                                        onMouseEnter={() => { setOptionSizeHover(1) }}
+                                                        onMouseLeave={() => { setOptionSizeHover(0) }}
+                                                        onClick={() => setOptionSizeSelected(1)}
+                                                        style={setBorderOptionSizePreview(1, "button")}
+                                                    >
+                                                        <span
+                                                            style={setBorderOptionSizePreview(1, "span")}
+                                                        >M</span>
+                                                    </button>
+                                                </li>
+                                                <li className="mr-25">
+                                                    <button
+                                                        className={classButton}
+                                                        onMouseEnter={() => { setOptionSizeHover(2) }}
+                                                        onMouseLeave={() => { setOptionSizeHover(0) }}
+                                                        onClick={() => setOptionSizeSelected(2)}
+                                                        style={setBorderOptionSizePreview(2, "button")}
+                                                    >
+                                                        <span
+                                                            style={setBorderOptionSizePreview(2, "span")}
+                                                        >Xl</span>
+                                                    </button>
+                                                </li>
+                                                <li className="mr-25">
+                                                    <button
+                                                        className={classButton}
+                                                        onMouseEnter={() => { setOptionSizeHover(3) }}
+                                                        onMouseLeave={() => { setOptionSizeHover(0) }}
+                                                        onClick={() => setOptionSizeSelected(3)}
+                                                        style={setBorderOptionSizePreview(3, "button")}
+                                                    >
+                                                        <span
+                                                            style={setBorderOptionSizePreview(3, "span")}
+                                                        >Xxl</span>
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </Card.Section>
                             </Card>

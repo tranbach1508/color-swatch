@@ -21,11 +21,23 @@
 .mt-10{
     margin-top: 10px;
 }
+.mt-15{
+    margin-top: 15px;
+}
 .mt-20{
     margin-top: 20px;
 }
 .mr-5{
     margin-right: 5px;
+}
+.mr-10{
+    margin-right: 10px;
+}
+.mr-15{
+    margin-right: 15px;
+}
+.mr-20{
+    margin-right: 20px;
 }
 .mr-25{
     margin-right: 25px;
@@ -33,9 +45,16 @@
 .mr-50{
     margin-right: 50px;
 }
+.ml-10{
+    margin-left: 10px;
+}
 .space-between{
     display: flex;
     justify-content: space-between;
+}
+.center{
+    display: flex;
+    justify-content: center;
 }
 .flex-end{
     display: flex;
@@ -125,12 +144,7 @@
 .upload_file .Polaris-Icon svg,.image_url .Polaris-Icon svg{
     fill: #fff;
 }
-.mr-15{
-    margin-right: 15px;
-}
-.mr-20{
-    margin-right: 20px;
-}
+
 input#upload_file{
     display: none;
 }
@@ -189,6 +203,9 @@ input#upload_file{
 .mb-10{
     margin-bottom: 10px;
 }
+.mb-0{
+    margin-bottom: 0px !important;
+}
 .product_page .small .image_preview{
     max-width: 50px;
 }
@@ -217,13 +234,19 @@ input#upload_file{
     width: 100%;
 }
 .product_page .swatch_preview .product_name{
-    font-size: 30px;
+    font-size: 20px;
     font-weight: bold;
-    line-height: 32px;
+    line-height: 26px;
+    font-family: "Cooper BT",serif;
 }
 .product_page .swatch_preview .product_price{
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 16px;
+    font-weight: 400;
+}
+.product_page .option_color label,.option_size label{
+    font-family: "Neuzeit Office",sans-serif;
+    font-size: 14px;
+    font-weight: 400;
 }
 .Polaris-DataTable__Cell .Polaris-Select__Content{
     min-width: 250px !important;
@@ -256,28 +279,28 @@ li{
     border-radius: 50%;
 }
 .product_page .small.double{
-    width: 58px;
-    height: 58px;
+    width: 48px;
+    height: 48px;
 }
 .product_page .medium.double{
+    width: 68px;
+    height: 68px;
+}
+.product_page .large.double{
     width: 88px;
     height: 88px;
 }
-.product_page .large.double{
-    width: 118px;
-    height: 118px;
-}
 .product_page .small{
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
 }
 .product_page .medium{
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
 }
 .product_page .large{
-    width: 110px;
-    height: 110px;
+    width: 80px;
+    height: 80px;
 }
 .collection_page .small.double{
     width: 28px;
@@ -302,6 +325,9 @@ li{
 .collection_page .large{
     width: 30px;
     height: 30px;
+}
+.collection_page .option_color ul li:nth-child(3),.collection_page .option_size ul li:nth-child(3){
+    margin-right: 0 !important;
 }
 div.double{
     padding: 3px;
@@ -397,8 +423,8 @@ button:focus{
     outline: 0;
 }
 .collection_page .product_image img{
-    width: 320px;
-    height: 320px;
+    width: 300px;
+    height: 300px;
 }
 .collection_page .product_name{
     font-size: 14px;
@@ -421,4 +447,18 @@ button:focus{
 }
 .hidden-scroll{
     overflow: hidden;
+}
+.main-image{
+    max-width: 100%;
+}
+.max-300{
+    max-width: 300px;
+}
+.number_product_in_stock p{
+    font-size: 11px;
+    font-weight: 400;
+    font-family: "Neuzeit Office",sans-serif;
+}
+.option_color > ul > li > div,.option_size > ul > li > button{
+    cursor: pointer;
 }

@@ -30,7 +30,7 @@ class AdminController extends Controller
         foreach ($option_values as $key => $value) {
             $option_exist = Option::whereName($value['option'])->whereShop_id($shop->id)->first();
             if ($option_exist != null) {
-                $option_item_exist = OptionItem::whereOption_id($option_exist->id)->whereValue($value['value'])->whereProduct_id($value['product_id'])->first();
+                $option_item_exist = OptionItem::whereOption_id($option_exist->id)->whereValue($value['value'])->first();
                 if ($option_item_exist == null) {
                     $option_item = OptionItem::create([
                         'option_id' => $option_exist->id,
@@ -58,13 +58,16 @@ class AdminController extends Controller
                         'order' => $order_max +1
                     ]);
                 }
-                $option_item = OptionItem::create([
-                    'option_id' => $option->id,
-                    'value' => $value['value'],
-                    'select_type' => 1,
-                    'product_id' => $value['product_id'],
-                ]);
-                $order += 1;
+                $option_item_exist = OptionItem::whereOption_id($option->id)->whereValue($value['value'])->first();
+                if($option_item_exist == null){
+                    $option_item = OptionItem::create([
+                        'option_id' => $option->id,
+                        'value' => $value['value'],
+                        'select_type' => 1,
+                        'product_id' => $value['product_id'],
+                    ]);
+                    $order += 1;
+                }
             }
         }
         return view('settings');

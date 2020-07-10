@@ -156,6 +156,7 @@ export default function Dashboard() {
                     handleActiveModal={handleActiveModal}
                     closeModal={closeModal}
                 ></ModalOptionDetail>
+                
             </Page>
         </div>
     );

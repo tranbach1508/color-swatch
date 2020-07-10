@@ -541,9 +541,9 @@ export default function Dashboard(props) {
             return (
                 variantOption.field.option_items.map((value, index) => (
                     <li key={index}>
-                        <div className="value-option">
-                            <h3 className="value-name mb-10">{value.value} <a className="affects_product">(affects only 1 product)</a></h3>
-                            <div className="custom-value-option">
+                        <div className="value-option mb-10">
+                            <h3 className="value-name">{value.value} <a className="affects_product">(affects only 1 product)</a></h3>
+                            <div className="custom-value-option ">
                                 <div className="value-preview mr-50 relative">
                                     <span className="top_color" style={{ backgroundColor: colorPickerValue.one_color.hex }}></span>
                                     <span className="bottom_color" style={{ borderBottomColor: colorPickerValue.two_color.hex, display: seletedTypeSwatch == '1' ? 'none' : 'block' }}></span>
